@@ -1,0 +1,404 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		13B70F4BF9C933A93C2B088A /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = D957597F495EDB56C99AD90E /* ComposableArchitecture */; };
+		5FE54B8A8AD38266D366EFAA /* AppFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95D1EFE56394F05952D1344 /* AppFeature.swift */; };
+		8777ED75C44C61A359B9E4B5 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB5C166189212482BE9F577D /* AppView.swift */; };
+		A80BA3F486D16D8C27C81F0A /* CapptApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E948A2AE663DD845DD1EB3AE /* CapptApp.swift */; };
+		ECAF79F5C9B50ADF339B47E9 /* BreedsFeature in Frameworks */ = {isa = PBXBuildFile; productRef = E9D64AAF386318A0F04B793A /* BreedsFeature */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		2448FF0929DA083BCB390782 /* PersistenceKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = PersistenceKit; path = Packages/PersistenceKit; sourceTree = SOURCE_ROOT; };
+		34530AAD027062BD8144F0E8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		356A39CA8A9E858EE9DBA1D8 /* DesignKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DesignKit; path = Packages/DesignKit; sourceTree = SOURCE_ROOT; };
+		52F322118970FB88D5399E69 /* Cappt.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Cappt.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5FAA588E16BEB38E18CF1A6F /* NetworkKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = NetworkKit; path = Packages/NetworkKit; sourceTree = SOURCE_ROOT; };
+		8EC570DAC93B1EFFC5813E50 /* BreedsFeature */ = {isa = PBXFileReference; lastKnownFileType = folder; name = BreedsFeature; path = Packages/BreedsFeature; sourceTree = SOURCE_ROOT; };
+		E948A2AE663DD845DD1EB3AE /* CapptApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapptApp.swift; sourceTree = "<group>"; };
+		E95D1EFE56394F05952D1344 /* AppFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeature.swift; sourceTree = "<group>"; };
+		FB5C166189212482BE9F577D /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		06A0153153E86304E414B303 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ECAF79F5C9B50ADF339B47E9 /* BreedsFeature in Frameworks */,
+				13B70F4BF9C933A93C2B088A /* ComposableArchitecture in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		228C70C330C085DE8EB9A2B5 /* Cappt */ = {
+			isa = PBXGroup;
+			children = (
+				E95D1EFE56394F05952D1344 /* AppFeature.swift */,
+				FB5C166189212482BE9F577D /* AppView.swift */,
+				E948A2AE663DD845DD1EB3AE /* CapptApp.swift */,
+				34530AAD027062BD8144F0E8 /* Info.plist */,
+			);
+			path = Cappt;
+			sourceTree = "<group>";
+		};
+		3E4DA1CD51BED1F4AE886019 /* PersistenceKit */ = {
+			isa = PBXGroup;
+			children = (
+				2448FF0929DA083BCB390782 /* PersistenceKit */,
+			);
+			path = PersistenceKit;
+			sourceTree = "<group>";
+		};
+		80041DD5AABE6331DB83AEF0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				52F322118970FB88D5399E69 /* Cappt.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		88C2E6A72EB6A6BE0B273CFE /* BreedsFeature */ = {
+			isa = PBXGroup;
+			children = (
+				8EC570DAC93B1EFFC5813E50 /* BreedsFeature */,
+			);
+			path = BreedsFeature;
+			sourceTree = "<group>";
+		};
+		A82E6D57E190BED825339A71 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				88C2E6A72EB6A6BE0B273CFE /* BreedsFeature */,
+				F2D9CFE7DA7B56717585C4AD /* DesignKit */,
+				B657A05DE0EA7AF9989B03F9 /* NetworkKit */,
+				3E4DA1CD51BED1F4AE886019 /* PersistenceKit */,
+			);
+			path = Packages;
+			sourceTree = "<group>";
+		};
+		AD21B8E5C16466944AD52B77 = {
+			isa = PBXGroup;
+			children = (
+				228C70C330C085DE8EB9A2B5 /* Cappt */,
+				A82E6D57E190BED825339A71 /* Packages */,
+				80041DD5AABE6331DB83AEF0 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		B657A05DE0EA7AF9989B03F9 /* NetworkKit */ = {
+			isa = PBXGroup;
+			children = (
+				5FAA588E16BEB38E18CF1A6F /* NetworkKit */,
+			);
+			path = NetworkKit;
+			sourceTree = "<group>";
+		};
+		F2D9CFE7DA7B56717585C4AD /* DesignKit */ = {
+			isa = PBXGroup;
+			children = (
+				356A39CA8A9E858EE9DBA1D8 /* DesignKit */,
+			);
+			path = DesignKit;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D4DE1E162604BFD7DECB9B2D /* Cappt */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 41CD18F57C82AEA42496E3A7 /* Build configuration list for PBXNativeTarget "Cappt" */;
+			buildPhases = (
+				F1062FC023F78D49405CDD2C /* Sources */,
+				06A0153153E86304E414B303 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Cappt;
+			packageProductDependencies = (
+				E9D64AAF386318A0F04B793A /* BreedsFeature */,
+				D957597F495EDB56C99AD90E /* ComposableArchitecture */,
+			);
+			productName = Cappt;
+			productReference = 52F322118970FB88D5399E69 /* Cappt.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		37CBFAEE6B152775F3FAE42B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = EB5428E34069E45076415D62 /* Build configuration list for PBXProject "Cappt" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = AD21B8E5C16466944AD52B77;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				12DE1E3703A48E2B663B0D34 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+				1F1F2DE4CF5C7E8FF723CAA2 /* XCLocalSwiftPackageReference "Packages/BreedsFeature" */,
+				EE5CF01BC0E844DB423F568D /* XCLocalSwiftPackageReference "Packages/DesignKit" */,
+				5FBD00B2B8F9EF417D2CD691 /* XCLocalSwiftPackageReference "Packages/NetworkKit" */,
+				6F9E375C027890B77ACBF5D8 /* XCLocalSwiftPackageReference "Packages/PersistenceKit" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 80041DD5AABE6331DB83AEF0 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D4DE1E162604BFD7DECB9B2D /* Cappt */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F1062FC023F78D49405CDD2C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5FE54B8A8AD38266D366EFAA /* AppFeature.swift in Sources */,
+				8777ED75C44C61A359B9E4B5 /* AppView.swift in Sources */,
+				A80BA3F486D16D8C27C81F0A /* CapptApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		148695C559E0DBC29F174EC4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = Cappt/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.sword.challenge.cappt;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1A85FD99499FE7BF3757996D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		AF914AA47501CDFF56C36406 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		DD5E794023FDCAD3514D3B50 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = Cappt/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.sword.challenge.cappt;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		41CD18F57C82AEA42496E3A7 /* Build configuration list for PBXNativeTarget "Cappt" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				148695C559E0DBC29F174EC4 /* Debug */,
+				DD5E794023FDCAD3514D3B50 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		EB5428E34069E45076415D62 /* Build configuration list for PBXProject "Cappt" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1A85FD99499FE7BF3757996D /* Debug */,
+				AF914AA47501CDFF56C36406 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		1F1F2DE4CF5C7E8FF723CAA2 /* XCLocalSwiftPackageReference "Packages/BreedsFeature" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/BreedsFeature;
+		};
+		5FBD00B2B8F9EF417D2CD691 /* XCLocalSwiftPackageReference "Packages/NetworkKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/NetworkKit;
+		};
+		6F9E375C027890B77ACBF5D8 /* XCLocalSwiftPackageReference "Packages/PersistenceKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/PersistenceKit;
+		};
+		EE5CF01BC0E844DB423F568D /* XCLocalSwiftPackageReference "Packages/DesignKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/DesignKit;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		12DE1E3703A48E2B663B0D34 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D957597F495EDB56C99AD90E /* ComposableArchitecture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 12DE1E3703A48E2B663B0D34 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			productName = ComposableArchitecture;
+		};
+		E9D64AAF386318A0F04B793A /* BreedsFeature */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BreedsFeature;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 37CBFAEE6B152775F3FAE42B /* Project object */;
+}
