@@ -5,27 +5,67 @@ import SwiftUI
 public struct BreedsView: View {
     let store: StoreOf<BreedsFeature>
     
+    private let columns = Array(
+        repeating: GridItem(.flexible(), spacing: 12, alignment: .top),
+        count: 3
+    )
+    
     public init(store: StoreOf<BreedsFeature>) {
         self.store = store
     }
     
     public var body: some View {
-        ZStack {
-            AppTheme.Colors.background
-                .ignoresSafeArea()
-            
-            VStack(spacing: 20) {
-                Text("Breeds")
-                    .font(.system(size: 60, weight: .black, design: .rounded))
-                    .foregroundStyle(AppTheme.Colors.accent)
-                Image(systemName: "pawprint.fill")
-                    .font(.system(size: 100))
-                    .foregroundStyle(AppTheme.Colors.accent)
+        ScrollView {
+            LazyVGrid(columns: self.columns, spacing: 16) {
+                ForEach(self.store.breeds) { breed in
+                    BreedCell(breed: breed)
+                }
             }
-            .padding(AppTheme.Layout.screenPadding)
+            .padding(.horizontal, AppTheme.Layout.screenPadding)
+            .padding(.vertical, 20)
         }
+        .background(AppTheme.Colors.background.ignoresSafeArea())
         .onAppear {
             self.store.send(.onAppear)
+        }
+    }
+}
+
+private struct BreedCell: View {
+    let breed: BreedsFeature.State.Breed
+    
+    var body: some View {
+        VStack(spacing: 10) {
+            RoundedRectangle(
+                cornerRadius: AppTheme.Layout.cardCornerRadius - 6,
+                style: .continuous
+            )
+            .fill(AppTheme.Colors.panelBackground)
+            .aspectRatio(1, contentMode: .fit)
+            .overlay {
+                Image(systemName: "photo")
+                    .font(.system(size: 24, weight: .medium))
+                    .foregroundStyle(AppTheme.Colors.secondaryText)
+            }
+            .overlay(alignment: .topTrailing) {
+                Image(systemName: self.breed.isFavorite ? "star.fill" : "star")
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundStyle(
+                        self.breed.isFavorite
+                        ? AppTheme.Colors.accent
+                        : AppTheme.Colors.secondaryText
+                    )
+                    .padding(8)
+                    .background(.regularMaterial, in: Circle())
+                    .padding(8)
+            }
+            
+            Text(self.breed.name)
+                .font(.body)
+                .foregroundStyle(.primary)
+                .frame(maxWidth: .infinity)
+                .lineLimit(2)
+                .multilineTextAlignment(.center)
         }
     }
 }
