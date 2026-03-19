@@ -1,22 +1,61 @@
 import Foundation
 
-public struct APIClient {
+public struct APIClient: Sendable {
+    private let configuration: APIClientConfiguration
     private let session: URLSession
     
-    public init(session: URLSession = .shared) {
+    public init(
+        configuration: APIClientConfiguration,
+        session: URLSession = .shared
+    ) {
+        self.configuration = configuration
         self.session = session
     }
     
-    public func data(for request: URLRequest) async throws -> (Data, URLResponse) {
-        try await self.session.data(for: request)
+    public func data(for endpoint: some EndpointType) async throws -> (Data, URLResponse) {
+        let request = try self.request(for: endpoint)
+        let (data, response) = try await self.session.data(for: request)
+        try self.validate(response)
+        return (data, response)
     }
     
-    public func decode<Response: Decodable>(
-        _ type: Response.Type = Response.self,
-        for request: URLRequest,
-        decoder: JSONDecoder = JSONDecoder()
-    ) async throws -> Response {
-        let (data, _) = try await self.data(for: request)
-        return try decoder.decode(Response.self, from: data)
+    func request(for endpoint: some EndpointType) throws -> URLRequest {
+        let path = endpoint.path.hasPrefix("/") ? String(endpoint.path.dropFirst()) : endpoint.path
+        let baseURL = self.configuration.baseURL.absoluteString
+            .trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+        let urlString = "\(baseURL)/\(path)"
+        
+        guard var components = URLComponents(
+            string: urlString
+        ) else {
+            throw APIClientError.invalidURL
+        }
+        
+        if !endpoint.queryItems.isEmpty {
+            components.queryItems = endpoint.queryItems
+        }
+        
+        guard let requestURL = components.url else {
+            throw APIClientError.invalidURL
+        }
+        
+        var request = URLRequest(url: requestURL)
+        request.httpMethod = endpoint.method.rawValue
+        
+        for (field, value) in endpoint.headers {
+            request.setValue(value, forHTTPHeaderField: field)
+        }
+        
+        return request
+    }
+    
+    private func validate(_ response: URLResponse) throws {
+        guard let response = response as? HTTPURLResponse else {
+            throw APIClientError.invalidResponse
+        }
+        
+        guard (200..<300).contains(response.statusCode) else {
+            throw APIClientError.unexpectedStatusCode(response.statusCode)
+        }
     }
 }
