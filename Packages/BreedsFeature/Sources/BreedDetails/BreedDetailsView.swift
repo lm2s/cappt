@@ -66,7 +66,7 @@ private struct BreedHeroImage: View {
                 case let .success(image):
                     image
                         .resizable()
-                        .scaledToFill()
+                        .scaledToFit()
                 default:
                     VStack(spacing: 12) {
                         Image(systemName: "photo")
@@ -80,8 +80,6 @@ private struct BreedHeroImage: View {
                 }
             }
         }
-        .frame(maxWidth: .infinity)
-        .frame(height: 320)
         .clipShape(
             RoundedRectangle(
                 cornerRadius: AppTheme.Layout.cardCornerRadius,
