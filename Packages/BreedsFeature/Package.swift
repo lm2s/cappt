@@ -22,9 +22,20 @@ let package = Package(
     ],
     targets: [
         .target(
+            name: "BreedDetails",
+            dependencies: [
+                "DesignKit",
+                .product(
+                    name: "ComposableArchitecture",
+                    package: "swift-composable-architecture"
+                ),
+            ]
+        ),
+        .target(
             name: "BreedsFeature",
             dependencies: [
                 "DesignKit",
+                "BreedDetails",
                 .product(
                     name: "ComposableArchitecture",
                     package: "swift-composable-architecture"
