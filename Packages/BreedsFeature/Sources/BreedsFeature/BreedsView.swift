@@ -18,7 +18,9 @@ public struct BreedsView: View {
         ScrollView {
             LazyVGrid(columns: self.columns, spacing: 16) {
                 ForEach(self.store.breeds) { breed in
-                    BreedCell(breed: breed)
+                    BreedCell(breed: breed) {
+                        self.store.send(.favoriteButtonTapped(id: breed.id))
+                    }
                 }
             }
             .padding(.horizontal, AppTheme.Layout.screenPadding)
@@ -33,8 +35,9 @@ public struct BreedsView: View {
 
 private struct BreedCell: View {
     let breed: BreedsFeature.State.Breed
+    let favoriteButtonTapped: () -> Void
     
-    var body: some View {
+    var body: some View { // TODO: text over image with blur/glass effect
         VStack(spacing: 10) {
             RoundedRectangle(
                 cornerRadius: AppTheme.Layout.cardCornerRadius - 6,
@@ -48,16 +51,16 @@ private struct BreedCell: View {
                     .foregroundStyle(AppTheme.Colors.secondaryText)
             }
             .overlay(alignment: .topTrailing) {
-                Image(systemName: self.breed.isFavorite ? "star.fill" : "star")
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundStyle(
-                        self.breed.isFavorite
-                        ? AppTheme.Colors.accent
-                        : AppTheme.Colors.secondaryText
-                    )
-                    .padding(8)
-                    .background(.regularMaterial, in: Circle())
-                    .padding(8)
+                Button(action: self.favoriteButtonTapped) {
+                    Image(systemName: self.breed.isFavorite ? "star.fill" : "star")
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundStyle(self.breed.isFavorite ? AppTheme.Colors.accent : AppTheme.Colors.secondaryText)
+                        .padding(8)
+                        .background(.regularMaterial, in: Circle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(self.breed.isFavorite ? "Remove from favorites" : "Add to favorites") // TODO: localize
+                .padding(8)
             }
             
             Text(self.breed.name)

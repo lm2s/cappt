@@ -11,7 +11,7 @@ public struct BreedsFeature {
         struct Breed: Equatable, Identifiable {
             let id: String
             let name: String
-            let isFavorite: Bool
+            var isFavorite: Bool
             
             static let mock: [Self] = [
                 Self(id: "abyssinian", name: "Abyssinian", isFavorite: false),
@@ -32,14 +32,22 @@ public struct BreedsFeature {
     
     public enum Action {
         case onAppear
+        case favoriteButtonTapped(id: String)
     }
     
     public init() {}
     
     public var body: some Reducer<State, Action> {
-        Reduce { _, action in
+        Reduce { state, action in
             switch action {
             case .onAppear:
+                return .none
+                
+            case let .favoriteButtonTapped(id):
+                guard let index = state.breeds.firstIndex(where: { $0.id == id }) else {
+                    return .none
+                }
+                state.breeds[index].isFavorite.toggle()
                 return .none
             }
         }
