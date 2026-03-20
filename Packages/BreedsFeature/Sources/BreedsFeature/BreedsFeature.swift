@@ -10,8 +10,9 @@ public struct BreedsFeature {
     @ObservableState
     public struct State: Equatable {
         var hasLoadedBreeds = false
-        var breeds = Breed.mock
+        var breeds: [Breed] = []
         var isLoading = false
+        var hasError = false
         @Presents var breedDetails: BreedDetails.State?
 
         public init() {}
@@ -23,6 +24,7 @@ public struct BreedsFeature {
         case breedDetails(PresentationAction<BreedDetails.Action>)
         case onAppear
         case favoriteButtonTapped(id: String)
+        case retryButtonTapped
     }
 
     public init() {}
@@ -41,6 +43,7 @@ public struct BreedsFeature {
                 state.breeds = breeds
                 state.hasLoadedBreeds = true
                 state.isLoading = false
+                state.hasError = false
 
                 if let selectedID = state.breedDetails?.breed.id,
                    let updatedBreed = breeds.first(where: { $0.id == selectedID }) {
@@ -51,6 +54,7 @@ public struct BreedsFeature {
 
             case .breedsResponse(.failure):
                 state.isLoading = false
+                state.hasError = true
                 return .none
 
             case .breedDetails(.presented(.favoriteButtonTapped)):
@@ -91,6 +95,11 @@ public struct BreedsFeature {
                         }
                     }
                 }
+
+            case .retryButtonTapped:
+                state.hasError = false
+                state.hasLoadedBreeds = false
+                return .send(.onAppear)
 
             case let .favoriteButtonTapped(id):
                 return self.persistFavoriteToggle(&state, id: id)

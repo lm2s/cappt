@@ -18,22 +18,40 @@ public struct BreedsView: View {
     
     public var body: some View {
         NavigationStack {
-            ScrollView {
-                LazyVGrid(columns: self.columns, spacing: 16) {
-                    ForEach(self.store.breeds) { breed in
-                        BreedCell(
-                            breed: breed,
-                            breedButtonTapped: {
-                                self.store.send(.breedButtonTapped(id: breed.id))
-                            },
-                            favoriteButtonTapped: {
-                                self.store.send(.favoriteButtonTapped(id: breed.id))
+            Group {
+                if self.store.hasError {
+                    ContentUnavailableView {
+                        Label("Unable to Load Breeds", systemImage: "wifi.exclamationmark")
+                    } description: {
+                        Text("Check your connection and try again.")
+                    } actions: {
+                        Button("Retry") {
+                            self.store.send(.retryButtonTapped)
+                        }
+                        .buttonStyle(.bordered)
+                    }
+                } else if self.store.isLoading && self.store.breeds.isEmpty {
+                    ProgressView("Loading breeds…")
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                } else {
+                    ScrollView {
+                        LazyVGrid(columns: self.columns, spacing: 16) {
+                            ForEach(self.store.breeds) { breed in
+                                BreedCell(
+                                    breed: breed,
+                                    breedButtonTapped: {
+                                        self.store.send(.breedButtonTapped(id: breed.id))
+                                    },
+                                    favoriteButtonTapped: {
+                                        self.store.send(.favoriteButtonTapped(id: breed.id))
+                                    }
+                                )
                             }
-                        )
+                        }
+                        .padding(.horizontal, AppTheme.Layout.screenPadding)
+                        .padding(.vertical, 20)
                     }
                 }
-                .padding(.horizontal, AppTheme.Layout.screenPadding)
-                .padding(.vertical, 20)
             }
             .background(AppTheme.Colors.background.ignoresSafeArea())
             .navigationTitle("Breeds")

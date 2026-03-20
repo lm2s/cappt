@@ -83,6 +83,49 @@ struct BreedsFeatureTests {
         }
         await store.receive(\.breedsResponse.failure) {
             $0.isLoading = false
+            $0.hasError = true
+        }
+    }
+
+    @Test
+    func retryAfterFailureReloadsBreeds() async {
+        struct TestError: Error {}
+        var shouldFail = true
+
+        let store = TestStore(initialState: BreedsFeature.State()) {
+            BreedsFeature()
+        } withDependencies: {
+            $0.breedsService.fetchBreeds = {
+                if shouldFail {
+                    throw TestError()
+                }
+                return [Self.abyssinian(isFavorite: false)]
+            }
+            $0.breedsCacheClient.fetchBreeds = { [] }
+            $0.breedsCacheClient.saveBreeds = { _ in }
+        }
+
+        await store.send(.onAppear) {
+            $0.isLoading = true
+        }
+        await store.receive(\.breedsResponse.failure) {
+            $0.isLoading = false
+            $0.hasError = true
+        }
+
+        shouldFail = false
+
+        await store.send(.retryButtonTapped) {
+            $0.hasError = false
+            $0.hasLoadedBreeds = false
+        }
+        await store.receive(\.onAppear) {
+            $0.isLoading = true
+        }
+        await store.receive(\.breedsResponse.success) {
+            $0.breeds = [Self.abyssinian(isFavorite: false)]
+            $0.hasLoadedBreeds = true
+            $0.isLoading = false
         }
     }
 
