@@ -12,7 +12,7 @@ import Testing
 @MainActor
 struct BreedsFeatureTests {
     @Test
-    func onAppearLoadsBreedsWithPersistedFavorites() async {
+    func onAppearLoadsBreedsWithCachedFavorites() async {
         var initialState = BreedsFeature.State()
         initialState.breeds = [Self.abyssinian(isFavorite: false)]
 
@@ -22,7 +22,10 @@ struct BreedsFeatureTests {
             $0.breedsService.fetchBreeds = {
                 [Self.abyssinian(isFavorite: false)]
             }
-            $0.favoriteBreedsClient.fetchFavoriteBreedIDs = { ["abys"] }
+            $0.breedsCacheClient.fetchBreeds = {
+                [Self.abyssinian(isFavorite: true).cachedBreed]
+            }
+            $0.breedsCacheClient.saveBreeds = { _ in }
         }
 
         await store.send(.onAppear) {
@@ -36,7 +39,35 @@ struct BreedsFeatureTests {
     }
 
     @Test
-    func onAppearFailureStopsLoading() async {
+    func onAppearFallsBackToCacheOnNetworkFailure() async {
+        struct TestError: Error {}
+
+        var initialState = BreedsFeature.State()
+        initialState.breeds = [Self.abyssinian(isFavorite: false)]
+
+        let store = TestStore(initialState: initialState) {
+            BreedsFeature()
+        } withDependencies: {
+            $0.breedsService.fetchBreeds = {
+                throw TestError()
+            }
+            $0.breedsCacheClient.fetchBreeds = {
+                [Self.abyssinian(isFavorite: true).cachedBreed]
+            }
+        }
+
+        await store.send(.onAppear) {
+            $0.isLoading = true
+        }
+        await store.receive(\.breedsResponse.success) {
+            $0.breeds = [Self.abyssinian(isFavorite: true)]
+            $0.hasLoadedBreeds = true
+            $0.isLoading = false
+        }
+    }
+
+    @Test
+    func onAppearFailureWithEmptyCacheStopsLoading() async {
         struct TestError: Error {}
 
         let store = TestStore(initialState: BreedsFeature.State()) {
@@ -45,6 +76,7 @@ struct BreedsFeatureTests {
             $0.breedsService.fetchBreeds = {
                 throw TestError()
             }
+            $0.breedsCacheClient.fetchBreeds = { [] }
         }
 
         await store.send(.onAppear) {
@@ -65,7 +97,7 @@ struct BreedsFeatureTests {
         let store = TestStore(initialState: initialState) {
             BreedsFeature()
         } withDependencies: {
-            $0.favoriteBreedsClient.updateFavoriteBreed = { id, isFavorite in
+            $0.breedsCacheClient.updateFavoriteBreed = { id, isFavorite in
                 await recorder.record(id: id, isFavorite: isFavorite)
             }
         }
@@ -94,7 +126,7 @@ struct BreedsFeatureTests {
         let store = TestStore(initialState: initialState) {
             BreedsFeature()
         } withDependencies: {
-            $0.favoriteBreedsClient.updateFavoriteBreed = { id, isFavorite in
+            $0.breedsCacheClient.updateFavoriteBreed = { id, isFavorite in
                 await recorder.record(id: id, isFavorite: isFavorite)
             }
         }

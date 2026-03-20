@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="24512" systemVersion="25D2128" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="FavoriteBreedObject" representedClassName="FavoriteBreedObject" syncable="YES">
+    <entity name="BreedMO" representedClassName="BreedMO" syncable="YES">
+        <attribute name="breedDescription" attributeType="String" defaultValueString=""/>
         <attribute name="breedID" attributeType="String"/>
+        <attribute name="imageURL" attributeType="String" defaultValueString=""/>
+        <attribute name="isFavorite" attributeType="Boolean" defaultValueString="NO" usesScalarType="YES"/>
+        <attribute name="name" attributeType="String" defaultValueString=""/>
+        <attribute name="origin" attributeType="String" defaultValueString=""/>
+        <attribute name="temperament" attributeType="String" defaultValueString=""/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="breedID"/>
