@@ -62,22 +62,19 @@ private struct BreedHeroImage: View {
             )
             .fill(AppTheme.Colors.panelBackground)
             
-            AsyncImage(url: URL(string: self.imageURL)) { phase in
-                switch phase {
-                case let .success(image):
-                    image
-                        .resizable()
-                        .scaledToFit()
-                default:
-                    VStack(spacing: 12) {
-                        Image(systemName: "photo")
-                            .font(.system(size: 36, weight: .medium))
-                            .foregroundStyle(AppTheme.Colors.secondaryText)
-                        
-                        Text(self.name)
-                            .font(.headline)
-                            .foregroundStyle(AppTheme.Colors.secondaryText)
-                    }
+            CachedAsyncImage(url: URL(string: self.imageURL)) { image in
+                image
+                    .resizable()
+                    .scaledToFit()
+            } placeholder: {
+                VStack(spacing: 12) {
+                    Image(systemName: "photo")
+                        .font(.system(size: 36, weight: .medium))
+                        .foregroundStyle(AppTheme.Colors.secondaryText)
+
+                    Text(self.name)
+                        .font(.headline)
+                        .foregroundStyle(AppTheme.Colors.secondaryText)
                 }
             }
         }

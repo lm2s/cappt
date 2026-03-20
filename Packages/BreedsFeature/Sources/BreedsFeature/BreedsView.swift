@@ -59,17 +59,30 @@ private struct BreedCell: View {
         ZStack(alignment: .topTrailing) {
             Button(action: self.breedButtonTapped) {
                 VStack(spacing: 10) {
-                    RoundedRectangle(
-                        cornerRadius: AppTheme.Layout.cardCornerRadius - 6,
-                        style: .continuous
-                    )
-                    .fill(AppTheme.Colors.panelBackground)
-                    .aspectRatio(1, contentMode: .fit)
-                    .overlay {
+                    CachedAsyncImage(url: URL(string: self.breed.imageURL)) { image in
+                        image
+                            .resizable()
+                            .scaledToFill()
+                    } placeholder: {
                         Image(systemName: "photo")
                             .font(.system(size: 24, weight: .medium))
                             .foregroundStyle(AppTheme.Colors.secondaryText)
                     }
+                    .frame(minHeight: 0)
+                    .aspectRatio(1, contentMode: .fit)
+                    .clipShape(
+                        RoundedRectangle(
+                            cornerRadius: AppTheme.Layout.cardCornerRadius - 6,
+                            style: .continuous
+                        )
+                    )
+                    .background(
+                        RoundedRectangle(
+                            cornerRadius: AppTheme.Layout.cardCornerRadius - 6,
+                            style: .continuous
+                        )
+                        .fill(AppTheme.Colors.panelBackground)
+                    )
                     
                     Text(self.breed.name)
                         .font(.body)
