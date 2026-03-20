@@ -33,7 +33,7 @@ public struct BreedsView: View {
                 }
             }
 
-//            if #available(iOS 26.0, *) {
+            if #available(iOS 26.0, *) {
                 Tab(value: BreedsFeature.Tab.search, role: .search) {
                     NavigationStack {
                         SearchBreedsView(store: self.store)
@@ -49,7 +49,7 @@ public struct BreedsView: View {
                             set: { self.store.send(.searchTextChanged($0)) }
                         )
                     )
-//                }
+                }
             }
         }
         .onAppear {
@@ -62,6 +62,21 @@ struct AllBreedsView: View {
     let store: StoreOf<BreedsFeature>
 
     var body: some View {
+        if #available(iOS 26, *) {
+            allBreedsView
+        } else {
+            allBreedsView
+                .searchable(
+                    text: Binding(
+                        get: { self.store.searchText },
+                        set: { self.store.send(.searchTextChanged($0)) }
+                    )
+                )
+        }
+    }
+
+    @ViewBuilder
+    private var allBreedsView: some View {
         Group {
             if self.store.hasError {
                 ContentUnavailableView {
@@ -96,9 +111,7 @@ struct SearchBreedsView: View {
 
     var body: some View {
         Group {
-            if self.store.searchText.isEmpty {
-                ContentUnavailableView.search
-            } else if self.store.filteredBreeds.isEmpty {
+            if self.store.filteredBreeds.isEmpty && !self.store.searchText.isEmpty {
                 ContentUnavailableView.search(text: self.store.searchText)
             } else {
                 BreedGridView(
