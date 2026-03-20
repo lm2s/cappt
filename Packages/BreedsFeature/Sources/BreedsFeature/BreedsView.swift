@@ -12,29 +12,44 @@ public struct BreedsView: View {
     }
 
     public var body: some View {
-        NavigationStack {
-            TabView(selection: Binding(
-                get: { self.store.selectedTab },
-                set: { self.store.send(.tabSelected($0)) }
-            )) {
-                Tab("Breeds", systemImage: "square.grid.2x2", value: BreedsFeature.Tab.allBreeds) {
+        TabView(selection: Binding(
+            get: { self.store.selectedTab },
+            set: { self.store.send(.tabSelected($0)) }
+        )) {
+            Tab("Breeds", systemImage: "square.grid.2x2", value: BreedsFeature.Tab.allBreeds) {
+                NavigationStack {
                     AllBreedsView(store: self.store)
-                }
-                
-                Tab("Favorites", systemImage: "star", value: BreedsFeature.Tab.favorites) {
-                    FavoriteBreedsView(store: self.store)
-                }
-                
-                if #available (iOS 26.0, *) {
-                    Tab(value: BreedsFeature.Tab.search, role: .search) {
-                        SearchBreedsView(store: self.store)
-                    }
+                        .navigationDestination(
+                            store: self.store.scope(state: \.$breedDetails, action: \.breedDetails)
+                        ) { store in
+                            BreedDetailsView(store: store)
+                        }
                 }
             }
-            .navigationDestination(
-                store: self.store.scope(state: \.$breedDetails, action: \.breedDetails)
-            ) { store in
-                BreedDetailsView(store: store)
+
+            Tab("Favorites", systemImage: "star", value: BreedsFeature.Tab.favorites) {
+                NavigationStack {
+                    FavoriteBreedsView(store: self.store)
+                }
+            }
+
+//            if #available(iOS 26.0, *) {
+                Tab(value: BreedsFeature.Tab.search, role: .search) {
+                    NavigationStack {
+                        SearchBreedsView(store: self.store)
+                            .navigationDestination(
+                                store: self.store.scope(state: \.$breedDetails, action: \.breedDetails)
+                            ) { store in
+                                BreedDetailsView(store: store)
+                            }
+                    }
+                    .searchable(
+                        text: Binding(
+                            get: { self.store.searchText },
+                            set: { self.store.send(.searchTextChanged($0)) }
+                        )
+                    )
+//                }
             }
         }
         .onAppear {
@@ -73,12 +88,6 @@ struct AllBreedsView: View {
         .background(AppTheme.Colors.background.ignoresSafeArea())
         .navigationTitle("Breeds")
         .navigationBarTitleDisplayMode(.large)
-        .searchable(
-            text: Binding(
-                get: { self.store.searchText },
-                set: { self.store.send(.searchTextChanged($0)) }
-            )
-        )
     }
 }
 
