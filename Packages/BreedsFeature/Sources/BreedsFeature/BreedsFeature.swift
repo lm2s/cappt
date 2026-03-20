@@ -7,12 +7,18 @@ public struct BreedsFeature {
     @Dependency(\.breedsService) var breedsService
     @Dependency(\.breedsCacheClient) var breedsCacheClient
 
+    public enum Tab: Equatable {
+        case allBreeds
+        case favorites
+    }
+
     @ObservableState
     public struct State: Equatable {
         var hasLoadedBreeds = false
         var breeds: [Breed] = []
         var isLoading = false
         var hasError = false
+        var selectedTab: Tab = .allBreeds
         @Presents var breedDetails: BreedDetails.State?
 
         public init() {}
@@ -25,6 +31,7 @@ public struct BreedsFeature {
         case onAppear
         case favoriteButtonTapped(id: String)
         case retryButtonTapped
+        case tabSelected(Tab)
     }
 
     public init() {}
@@ -103,6 +110,10 @@ public struct BreedsFeature {
 
             case let .favoriteButtonTapped(id):
                 return self.persistFavoriteToggle(&state, id: id)
+
+            case let .tabSelected(tab):
+                state.selectedTab = tab
+                return .none
             }
         }
         .ifLet(\.$breedDetails, action: \.breedDetails) {
