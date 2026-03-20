@@ -10,6 +10,7 @@
 		13B70F4BF9C933A93C2B088A /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = D957597F495EDB56C99AD90E /* ComposableArchitecture */; };
 		5FE54B8A8AD38266D366EFAA /* AppFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95D1EFE56394F05952D1344 /* AppFeature.swift */; };
 		8777ED75C44C61A359B9E4B5 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB5C166189212482BE9F577D /* AppView.swift */; };
+		A04F3C412F6DB4C900FA34F3 /* AppUI in Frameworks */ = {isa = PBXBuildFile; productRef = A04F3C402F6DB4C900FA34F3 /* AppUI */; };
 		A80BA3F486D16D8C27C81F0A /* CapptApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E948A2AE663DD845DD1EB3AE /* CapptApp.swift */; };
 		ECAF79F5C9B50ADF339B47E9 /* BreedsFeature in Frameworks */ = {isa = PBXBuildFile; productRef = E9D64AAF386318A0F04B793A /* BreedsFeature */; };
 /* End PBXBuildFile section */
@@ -31,6 +32,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A04F3C412F6DB4C900FA34F3 /* AppUI in Frameworks */,
 				ECAF79F5C9B50ADF339B47E9 /* BreedsFeature in Frameworks */,
 				13B70F4BF9C933A93C2B088A /* ComposableArchitecture in Frameworks */,
 			);
@@ -128,6 +130,7 @@
 			packageProductDependencies = (
 				E9D64AAF386318A0F04B793A /* BreedsFeature */,
 				D957597F495EDB56C99AD90E /* ComposableArchitecture */,
+				A04F3C402F6DB4C900FA34F3 /* AppUI */,
 			);
 			productName = Cappt;
 			productReference = 52F322118970FB88D5399E69 /* Cappt.app */;
@@ -141,8 +144,6 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
-				TargetAttributes = {
-				};
 			};
 			buildConfigurationList = EB5428E34069E45076415D62 /* Build configuration list for PBXProject "Cappt" */;
 			developmentRegion = en;
@@ -156,9 +157,9 @@
 			packageReferences = (
 				12DE1E3703A48E2B663B0D34 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
 				1F1F2DE4CF5C7E8FF723CAA2 /* XCLocalSwiftPackageReference "Packages/BreedsFeature" */,
-				EE5CF01BC0E844DB423F568D /* XCLocalSwiftPackageReference "Packages/DesignKit" */,
 				5FBD00B2B8F9EF417D2CD691 /* XCLocalSwiftPackageReference "Packages/NetworkKit" */,
 				6F9E375C027890B77ACBF5D8 /* XCLocalSwiftPackageReference "Packages/PersistenceKit" */,
+				A04F3C3F2F6DB4C900FA34F3 /* XCLocalSwiftPackageReference "Packages/AppUI" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 80041DD5AABE6331DB83AEF0 /* Products */;
@@ -371,9 +372,9 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Packages/PersistenceKit;
 		};
-		EE5CF01BC0E844DB423F568D /* XCLocalSwiftPackageReference "Packages/DesignKit" */ = {
+		A04F3C3F2F6DB4C900FA34F3 /* XCLocalSwiftPackageReference "Packages/AppUI" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = Packages/DesignKit;
+			relativePath = Packages/AppUI;
 		};
 /* End XCLocalSwiftPackageReference section */
 
@@ -389,6 +390,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		A04F3C402F6DB4C900FA34F3 /* AppUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AppUI;
+		};
 		D957597F495EDB56C99AD90E /* ComposableArchitecture */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 12DE1E3703A48E2B663B0D34 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;

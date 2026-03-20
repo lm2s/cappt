@@ -3,14 +3,14 @@
 import PackageDescription
 
 let package = Package(
-    name: "DesignKit",
+    name: "AppUI",
     platforms: [
         .iOS(.v17)
     ],
     products: [
         .library(
-            name: "DesignKit",
-            targets: ["DesignKit"]
+            name: "AppUI",
+            targets: ["AppUI"]
         )
     ],
     dependencies: [
@@ -22,7 +22,7 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "DesignKit",
+            name: "AppUI",
             dependencies: [
                 "NetworkKit",
                 .product(

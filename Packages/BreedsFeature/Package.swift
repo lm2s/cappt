@@ -14,7 +14,7 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(path: "../DesignKit"),
+        .package(path: "../AppUI"),
         .package(path: "../NetworkKit"),
         .package(path: "../PersistenceKit"),
         .package(
@@ -34,7 +34,7 @@ let package = Package(
         .target(
             name: "BreedDetails",
             dependencies: [
-                "DesignKit",
+                "AppUI",
                 "PersistenceKit",
                 .product(
                     name: "ComposableArchitecture",
@@ -46,7 +46,7 @@ let package = Package(
         .target(
             name: "BreedsFeature",
             dependencies: [
-                "DesignKit",
+                "AppUI",
                 "BreedDetails",
                 "NetworkKit",
                 "PersistenceKit",

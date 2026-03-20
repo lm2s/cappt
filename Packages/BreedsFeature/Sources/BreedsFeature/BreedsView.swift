@@ -1,6 +1,6 @@
 import BreedDetails
 import ComposableArchitecture
-import DesignKit
+import AppUI
 import PersistenceKit
 import SwiftUI
 
