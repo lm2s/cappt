@@ -18,7 +18,7 @@
 /* Begin PBXFileReference section */
 		2448FF0929DA083BCB390782 /* PersistenceKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = PersistenceKit; path = Packages/PersistenceKit; sourceTree = SOURCE_ROOT; };
 		34530AAD027062BD8144F0E8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		52F322118970FB88D5399E69 /* Cappt.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Cappt.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		52F322118970FB88D5399E69 /* Cappt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cappt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FAA588E16BEB38E18CF1A6F /* NetworkKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = NetworkKit; path = Packages/NetworkKit; sourceTree = SOURCE_ROOT; };
 		8EC570DAC93B1EFFC5813E50 /* BreedsFeature */ = {isa = PBXFileReference; lastKnownFileType = folder; name = BreedsFeature; path = Packages/BreedsFeature; sourceTree = SOURCE_ROOT; };
 		E948A2AE663DD845DD1EB3AE /* CapptApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapptApp.swift; sourceTree = "<group>"; };
@@ -180,6 +180,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = FGA89NJBJF;
 				INFOPLIST_FILE = Cappt/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -314,6 +315,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = FGA89NJBJF;
 				INFOPLIST_FILE = Cappt/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (

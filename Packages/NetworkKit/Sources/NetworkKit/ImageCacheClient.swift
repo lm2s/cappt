@@ -56,7 +56,10 @@ private actor ImageCache {
         }
 
         let diskPath = self.diskURL(for: url)
-        if let data = try? Data(contentsOf: diskPath), let image = UIImage(data: data) {
+        if let image = await Task.detached(priority: .userInitiated, operation: { // Make sure disk read is not executed in main thread
+            guard let data = try? Data(contentsOf: diskPath) else { return nil as UIImage? }
+            return UIImage(data: data)
+        }).value {
             self.memoryCache.setObject(image, forKey: key)
             return image
         }
