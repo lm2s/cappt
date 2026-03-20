@@ -2,7 +2,6 @@ import BreedDetails
 import ComposableArchitecture
 import CustomDump
 import DependenciesTestSupport
-import Domain
 import Foundation
 import PersistenceKit
 import Testing
@@ -23,7 +22,7 @@ struct BreedsFeatureTests {
                 [Self.abyssinian(isFavorite: false)]
             }
             $0.breedsCacheClient.fetchBreeds = {
-                [Self.abyssinian(isFavorite: true).cachedBreed]
+                [Self.abyssinian(isFavorite: true)]
             }
             $0.breedsCacheClient.saveBreeds = { _ in }
         }
@@ -52,7 +51,7 @@ struct BreedsFeatureTests {
                 throw TestError()
             }
             $0.breedsCacheClient.fetchBreeds = {
-                [Self.abyssinian(isFavorite: true).cachedBreed]
+                [Self.abyssinian(isFavorite: true)]
             }
         }
 

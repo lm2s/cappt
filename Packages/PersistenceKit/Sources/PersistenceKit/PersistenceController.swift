@@ -33,7 +33,7 @@ public final class PersistenceController: @unchecked Sendable {
         self.container.viewContext
     }
 
-    public func fetchBreeds() async throws -> [CachedBreed] {
+    public func fetchBreeds() async throws -> [Breed] {
         let context = self.container.newBackgroundContext()
         context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
 
@@ -42,8 +42,8 @@ public final class PersistenceController: @unchecked Sendable {
             request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
             let objects = try context.fetch(request)
             return objects.map { object in
-                CachedBreed(
-                    breedDescription: object.breedDescription,
+                Breed(
+                    description: object.breedDescription,
                     id: object.breedID,
                     imageURL: object.imageURL,
                     isFavorite: object.isFavorite,
@@ -55,7 +55,7 @@ public final class PersistenceController: @unchecked Sendable {
         }
     }
 
-    public func saveBreeds(_ breeds: [CachedBreed]) async throws {
+    public func saveBreeds(_ breeds: [Breed]) async throws {
         let context = self.container.newBackgroundContext()
         context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
 
@@ -68,7 +68,7 @@ public final class PersistenceController: @unchecked Sendable {
 
                 let object = existing ?? BreedMO(context: context)
                 object.breedID = breed.id
-                object.breedDescription = breed.breedDescription
+                object.breedDescription = breed.description
                 object.imageURL = breed.imageURL
                 object.isFavorite = existing?.isFavorite ?? breed.isFavorite
                 object.name = breed.name

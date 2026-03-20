@@ -1,6 +1,5 @@
 import BreedDetails
 import ComposableArchitecture
-import Domain
 import PersistenceKit
 
 @Reducer
@@ -81,12 +80,12 @@ public struct BreedsFeature {
                             in: breeds,
                             favoriteBreedIDs: favoriteBreedIDs
                         )
-                        try? await saveBreeds(mergedBreeds.map(\.cachedBreed))
+                        try? await saveBreeds(mergedBreeds)
                         await send(.breedsResponse(.success(mergedBreeds)))
                     } catch {
                         let cachedBreeds = (try? await fetchCachedBreeds()) ?? []
                         if !cachedBreeds.isEmpty {
-                            await send(.breedsResponse(.success(cachedBreeds.map(\.breed))))
+                            await send(.breedsResponse(.success(cachedBreeds)))
                         } else {
                             await send(.breedsResponse(.failure(error)))
                         }
@@ -115,7 +114,7 @@ private extension BreedsFeature {
         }
     }
 
-    static func favoriteBreedIDs(from cachedBreeds: [CachedBreed]) -> Set<Breed.ID> {
+    static func favoriteBreedIDs(from cachedBreeds: [Breed]) -> Set<Breed.ID> {
         Set(cachedBreeds.filter(\.isFavorite).map(\.id))
     }
 
@@ -144,33 +143,5 @@ private extension BreedsFeature {
         }
 
         return isFavorite
-    }
-}
-
-extension Breed {
-    var cachedBreed: CachedBreed {
-        CachedBreed(
-            breedDescription: self.description,
-            id: self.id,
-            imageURL: self.imageURL,
-            isFavorite: self.isFavorite,
-            name: self.name,
-            origin: self.origin,
-            temperament: self.temperament
-        )
-    }
-}
-
-extension CachedBreed {
-    var breed: Breed {
-        Breed(
-            description: self.breedDescription,
-            id: self.id,
-            imageURL: self.imageURL,
-            isFavorite: self.isFavorite,
-            name: self.name,
-            origin: self.origin,
-            temperament: self.temperament
-        )
     }
 }

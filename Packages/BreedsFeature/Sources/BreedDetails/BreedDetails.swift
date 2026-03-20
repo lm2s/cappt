@@ -1,5 +1,5 @@
 import ComposableArchitecture
-import Domain
+import PersistenceKit
 
 @Reducer
 public struct BreedDetails {

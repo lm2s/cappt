@@ -1,3 +1,5 @@
+import Foundation
+
 public struct Breed: Equatable, Identifiable, Sendable {
     public let description: String
     public let id: String
@@ -6,7 +8,7 @@ public struct Breed: Equatable, Identifiable, Sendable {
     public let origin: String
     public let temperament: String
     public var isFavorite: Bool
-    
+
     public init(
         description: String,
         id: String,

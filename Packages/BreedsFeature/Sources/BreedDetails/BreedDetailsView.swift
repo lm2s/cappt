@@ -1,6 +1,6 @@
 import ComposableArchitecture
 import DesignKit
-import Domain
+import PersistenceKit
 import SwiftUI
 
 public struct BreedDetailsView: View {

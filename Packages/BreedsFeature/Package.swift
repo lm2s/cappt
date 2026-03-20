@@ -32,19 +32,10 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "Domain",
-            path: "Sources/Domain",
-            exclude: [
-                "BreedsEndpoint.swift",
-                "BreedsService.swift",
-            ],
-            sources: ["Breed.swift"]
-        ),
-        .target(
             name: "BreedDetails",
             dependencies: [
                 "DesignKit",
-                "Domain",
+                "PersistenceKit",
                 .product(
                     name: "ComposableArchitecture",
                     package: "swift-composable-architecture"
@@ -57,7 +48,6 @@ let package = Package(
             dependencies: [
                 "DesignKit",
                 "BreedDetails",
-                "Domain",
                 "NetworkKit",
                 "PersistenceKit",
                 .product(
@@ -68,7 +58,6 @@ let package = Package(
             path: "Sources",
             exclude: [
                 "BreedDetails",
-                "Domain/Breed.swift",
             ],
             sources: [
                 "BreedsFeature",

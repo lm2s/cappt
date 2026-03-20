@@ -1,13 +1,13 @@
 import Dependencies
 
 public struct BreedsCacheClient: Sendable {
-    public var fetchBreeds: @Sendable () async throws -> [CachedBreed]
-    public var saveBreeds: @Sendable (_ breeds: [CachedBreed]) async throws -> Void
+    public var fetchBreeds: @Sendable () async throws -> [Breed]
+    public var saveBreeds: @Sendable (_ breeds: [Breed]) async throws -> Void
     public var updateFavoriteBreed: @Sendable (_ breedID: String, _ isFavorite: Bool) async throws -> Void
 
     public init(
-        fetchBreeds: @escaping @Sendable () async throws -> [CachedBreed],
-        saveBreeds: @escaping @Sendable (_ breeds: [CachedBreed]) async throws -> Void,
+        fetchBreeds: @escaping @Sendable () async throws -> [Breed],
+        saveBreeds: @escaping @Sendable (_ breeds: [Breed]) async throws -> Void,
         updateFavoriteBreed: @escaping @Sendable (_ breedID: String, _ isFavorite: Bool) async throws -> Void
     ) {
         self.fetchBreeds = fetchBreeds
