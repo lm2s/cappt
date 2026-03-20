@@ -67,8 +67,9 @@ private struct BreedCell: View {
                         Image(systemName: "photo")
                             .font(.system(size: 24, weight: .medium))
                             .foregroundStyle(AppTheme.Colors.secondaryText)
+                            
                     }
-                    .frame(minHeight: 0)
+                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
                     .aspectRatio(1, contentMode: .fit)
                     .clipShape(
                         RoundedRectangle(

@@ -18,7 +18,6 @@
 /* Begin PBXFileReference section */
 		2448FF0929DA083BCB390782 /* PersistenceKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = PersistenceKit; path = Packages/PersistenceKit; sourceTree = SOURCE_ROOT; };
 		34530AAD027062BD8144F0E8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		356A39CA8A9E858EE9DBA1D8 /* DesignKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DesignKit; path = Packages/DesignKit; sourceTree = SOURCE_ROOT; };
 		52F322118970FB88D5399E69 /* Cappt.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Cappt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FAA588E16BEB38E18CF1A6F /* NetworkKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = NetworkKit; path = Packages/NetworkKit; sourceTree = SOURCE_ROOT; };
 		8EC570DAC93B1EFFC5813E50 /* BreedsFeature */ = {isa = PBXFileReference; lastKnownFileType = folder; name = BreedsFeature; path = Packages/BreedsFeature; sourceTree = SOURCE_ROOT; };
@@ -80,7 +79,6 @@
 			isa = PBXGroup;
 			children = (
 				88C2E6A72EB6A6BE0B273CFE /* BreedsFeature */,
-				F2D9CFE7DA7B56717585C4AD /* DesignKit */,
 				B657A05DE0EA7AF9989B03F9 /* NetworkKit */,
 				3E4DA1CD51BED1F4AE886019 /* PersistenceKit */,
 			);
@@ -102,14 +100,6 @@
 				5FAA588E16BEB38E18CF1A6F /* NetworkKit */,
 			);
 			path = NetworkKit;
-			sourceTree = "<group>";
-		};
-		F2D9CFE7DA7B56717585C4AD /* DesignKit */ = {
-			isa = PBXGroup;
-			children = (
-				356A39CA8A9E858EE9DBA1D8 /* DesignKit */,
-			);
-			path = DesignKit;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
