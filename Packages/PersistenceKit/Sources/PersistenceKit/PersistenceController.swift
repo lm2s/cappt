@@ -68,29 +68,12 @@ public final class PersistenceController: @unchecked Sendable {
     }
     
     private static let managedObjectModel: NSManagedObjectModel = {
-        let breedID = NSAttributeDescription()
-        breedID.name = "breedID"
-        breedID.attributeType = .stringAttributeType
-        breedID.isOptional = false
-
-        let entity = NSEntityDescription()
-        entity.name = "FavoriteBreedObject"
-        entity.managedObjectClassName = NSStringFromClass(FavoriteBreedObject.self)
-        entity.properties = [breedID]
-        entity.uniquenessConstraints = [["breedID"]]
-
-        let model = NSManagedObjectModel()
-        model.entities = [entity]
+        guard
+            let url = Bundle.module.url(forResource: "CapptModel", withExtension: "momd"),
+            let model = NSManagedObjectModel(contentsOf: url)
+        else {
+            fatalError("Failed to load Core Data model")
+        }
         return model
     }()
-}
-
-@objc(FavoriteBreedObject)
-final class FavoriteBreedObject: NSManagedObject {
-    @NSManaged var breedID: String
-
-    @nonobjc
-    static func fetchRequest() -> NSFetchRequest<FavoriteBreedObject> {
-        NSFetchRequest<FavoriteBreedObject>(entityName: "FavoriteBreedObject")
-    }
 }

@@ -27,6 +27,9 @@ let package = Package(
                     name: "Dependencies",
                     package: "swift-dependencies"
                 )
+            ],
+            resources: [
+                .process("CoreData/CapptModel.xcdatamodeld")
             ]
         )
     ]
