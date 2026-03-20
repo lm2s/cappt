@@ -13,7 +13,21 @@ let package = Package(
             targets: ["PersistenceKit"]
         )
     ],
+    dependencies: [
+        .package(
+            url: "https://github.com/pointfreeco/swift-dependencies",
+            from: "1.0.0"
+        )
+    ],
     targets: [
-        .target(name: "PersistenceKit")
+        .target(
+            name: "PersistenceKit",
+            dependencies: [
+                .product(
+                    name: "Dependencies",
+                    package: "swift-dependencies"
+                )
+            ]
+        )
     ]
 )

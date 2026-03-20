@@ -1,5 +1,5 @@
-import BreedDetails
 import ComposableArchitecture
+import Domain
 import Foundation
 import NetworkKit
 

@@ -16,6 +16,7 @@ let package = Package(
     dependencies: [
         .package(path: "../DesignKit"),
         .package(path: "../NetworkKit"),
+        .package(path: "../PersistenceKit"),
         .package(
             url: "https://github.com/pointfreeco/swift-composable-architecture",
             from: "1.0.0"
@@ -31,25 +32,48 @@ let package = Package(
     ],
     targets: [
         .target(
+            name: "Domain",
+            path: "Sources/Domain",
+            exclude: [
+                "BreedsEndpoint.swift",
+                "BreedsService.swift",
+            ],
+            sources: ["Breed.swift"]
+        ),
+        .target(
             name: "BreedDetails",
             dependencies: [
                 "DesignKit",
+                "Domain",
                 .product(
                     name: "ComposableArchitecture",
                     package: "swift-composable-architecture"
                 ),
-            ]
+            ],
+            path: "Sources/BreedDetails"
         ),
         .target(
             name: "BreedsFeature",
             dependencies: [
                 "DesignKit",
                 "BreedDetails",
+                "Domain",
                 "NetworkKit",
+                "PersistenceKit",
                 .product(
                     name: "ComposableArchitecture",
                     package: "swift-composable-architecture"
                 ),
+            ],
+            path: "Sources",
+            exclude: [
+                "BreedDetails",
+                "Domain/Breed.swift",
+            ],
+            sources: [
+                "BreedsFeature",
+                "Domain/BreedsEndpoint.swift",
+                "Domain/BreedsService.swift",
             ]
         ),
         .testTarget(

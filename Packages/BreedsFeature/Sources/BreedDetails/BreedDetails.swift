@@ -1,4 +1,5 @@
 import ComposableArchitecture
+import Domain
 
 @Reducer
 public struct BreedDetails {

@@ -1,9 +1,12 @@
 import BreedDetails
 import ComposableArchitecture
+import Domain
+import PersistenceKit
 
 @Reducer
 public struct BreedsFeature {
     @Dependency(\.breedsService) var breedsService
+    @Dependency(\.favoriteBreedsClient) var favoriteBreedsClient
 
     @ObservableState
     public struct State: Equatable {
@@ -55,8 +58,7 @@ public struct BreedsFeature {
                 guard let id = state.breedDetails?.breed.id else {
                     return .none
                 }
-                Self.toggleFavorite(&state, id: id)
-                return .none
+                return self.persistFavoriteToggle(&state, id: id)
                 
             case .breedDetails:
                 return .none
@@ -68,19 +70,23 @@ public struct BreedsFeature {
 
                 state.isLoading = true
                 let fetchBreeds = self.breedsService.fetchBreeds
+                let fetchFavoriteBreedIDs = self.favoriteBreedsClient.fetchFavoriteBreedIDs
                 return .run { send in
-                    await send(
-                        .breedsResponse(
-                            Result {
-                                try await fetchBreeds()
-                            }
+                    do {
+                        let breeds = try await fetchBreeds()
+                        let favoriteBreedIDs = (try? await fetchFavoriteBreedIDs()) ?? []
+                        let mergedBreeds = Self.mergingFavorites(
+                            in: breeds,
+                            favoriteBreedIDs: favoriteBreedIDs
                         )
-                    )
+                        await send(.breedsResponse(.success(mergedBreeds)))
+                    } catch {
+                        await send(.breedsResponse(.failure(error)))
+                    }
                 }
                 
             case let .favoriteButtonTapped(id):
-                Self.toggleFavorite(&state, id: id)
-                return .none
+                return self.persistFavoriteToggle(&state, id: id)
             }
         }
         .ifLet(\.$breedDetails, action: \.breedDetails) {
@@ -90,9 +96,32 @@ public struct BreedsFeature {
 }
 
 private extension BreedsFeature {
-    static func toggleFavorite(_ state: inout State, id: Breed.ID) {
+    func persistFavoriteToggle(_ state: inout State, id: Breed.ID) -> Effect<Action> {
+        guard let isFavorite = Self.toggleFavorite(&state, id: id) else {
+            return .none
+        }
+
+        let updateFavoriteBreed = self.favoriteBreedsClient.updateFavoriteBreed
+        return .run { _ in
+            try? await updateFavoriteBreed(id, isFavorite)
+        }
+    }
+
+    static func mergingFavorites(
+        in breeds: [Breed],
+        favoriteBreedIDs: Set<Breed.ID>
+    ) -> [Breed] {
+        breeds.map { breed in
+            var breed = breed
+            breed.isFavorite = favoriteBreedIDs.contains(breed.id)
+            return breed
+        }
+    }
+
+    @discardableResult
+    static func toggleFavorite(_ state: inout State, id: Breed.ID) -> Bool? {
         guard let index = state.breeds.firstIndex(where: { $0.id == id }) else {
-            return
+            return nil
         }
         
         state.breeds[index].isFavorite.toggle()
@@ -101,5 +130,7 @@ private extension BreedsFeature {
         if state.breedDetails?.breed.id == id {
             state.breedDetails?.breed.isFavorite = isFavorite
         }
+
+        return isFavorite
     }
 }

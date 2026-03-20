@@ -1,7 +1,7 @@
-import BreedDetails
 import ComposableArchitecture
 import CustomDump
 import DependenciesTestSupport
+import Domain
 import Foundation
 import NetworkKit
 import Testing
@@ -105,4 +105,3 @@ private final class URLProtocolStub: URLProtocol, @unchecked Sendable {
 
     override func stopLoading() {}
 }
-

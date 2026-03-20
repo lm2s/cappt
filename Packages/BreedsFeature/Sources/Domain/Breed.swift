@@ -27,7 +27,7 @@ public struct Breed: Equatable, Identifiable, Sendable {
 }
 
 public extension Breed {
-    public static let mock: [Self] = [
+    static let mock: [Self] = [
         Self(
             description: "Abyssinians are athletic, curious cats that stay busy and tend to bond closely with the people around them.",
             id: "abyssinian",

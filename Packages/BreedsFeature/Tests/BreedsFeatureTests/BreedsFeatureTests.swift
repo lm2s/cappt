@@ -2,8 +2,9 @@ import BreedDetails
 import ComposableArchitecture
 import CustomDump
 import DependenciesTestSupport
+import Domain
 import Foundation
-import NetworkKit
+import PersistenceKit
 import Testing
 
 @testable import BreedsFeature
@@ -11,40 +12,24 @@ import Testing
 @MainActor
 struct BreedsFeatureTests {
     @Test
-    func onAppearLoadsBreeds() async {
-        let store = TestStore(initialState: BreedsFeature.State()) {
+    func onAppearLoadsBreedsWithPersistedFavorites() async {
+        var initialState = BreedsFeature.State()
+        initialState.breeds = [Self.abyssinian(isFavorite: false)]
+
+        let store = TestStore(initialState: initialState) {
             BreedsFeature()
         } withDependencies: {
             $0.breedsService.fetchBreeds = {
-                [
-                    Breed(
-                        description: "Curious and social",
-                        id: "abys",
-                        imageURL: "https://cdn2.thecatapi.com/images/0XYvRd7oD.jpg",
-                        isFavorite: false,
-                        name: "Abyssinian",
-                        origin: "Egypt",
-                        temperament: "Active"
-                    )
-                ]
+                [Self.abyssinian(isFavorite: false)]
             }
+            $0.favoriteBreedsClient.fetchFavoriteBreedIDs = { ["abys"] }
         }
 
         await store.send(.onAppear) {
             $0.isLoading = true
         }
         await store.receive(\.breedsResponse.success) {
-            $0.breeds = [
-                Breed(
-                    description: "Curious and social",
-                    id: "abys",
-                    imageURL: "https://cdn2.thecatapi.com/images/0XYvRd7oD.jpg",
-                    isFavorite: false,
-                    name: "Abyssinian",
-                    origin: "Egypt",
-                    temperament: "Active"
-                )
-            ]
+            $0.breeds = [Self.abyssinian(isFavorite: true)]
             $0.hasLoadedBreeds = true
             $0.isLoading = false
         }
@@ -68,5 +53,93 @@ struct BreedsFeatureTests {
         await store.receive(\.breedsResponse.failure) {
             $0.isLoading = false
         }
+    }
+
+    @Test
+    func favoriteButtonTappedPersistsFavorite() async {
+        let recorder = FavoriteBreedsRecorder()
+
+        var initialState = BreedsFeature.State()
+        initialState.breeds = [Self.abyssinian(isFavorite: false)]
+
+        let store = TestStore(initialState: initialState) {
+            BreedsFeature()
+        } withDependencies: {
+            $0.favoriteBreedsClient.updateFavoriteBreed = { id, isFavorite in
+                await recorder.record(id: id, isFavorite: isFavorite)
+            }
+        }
+
+        await store.send(.favoriteButtonTapped(id: "abys")) {
+            $0.breeds[0].isFavorite = true
+        }
+        await store.finish()
+        let updates = await recorder.updates()
+
+        expectNoDifference(
+            updates,
+            [FavoriteUpdate(id: "abys", isFavorite: true)]
+        )
+    }
+
+    @Test
+    func favoriteButtonTappedFromDetailsPersistsFavorite() async {
+        let recorder = FavoriteBreedsRecorder()
+        let breed = Self.abyssinian(isFavorite: false)
+
+        var initialState = BreedsFeature.State()
+        initialState.breeds = [breed]
+        initialState.breedDetails = BreedDetails.State(breed: breed)
+
+        let store = TestStore(initialState: initialState) {
+            BreedsFeature()
+        } withDependencies: {
+            $0.favoriteBreedsClient.updateFavoriteBreed = { id, isFavorite in
+                await recorder.record(id: id, isFavorite: isFavorite)
+            }
+        }
+
+        await store.send(.breedDetails(.presented(.favoriteButtonTapped))) {
+            $0.breeds[0].isFavorite = true
+            $0.breedDetails?.breed.isFavorite = true
+        }
+        await store.finish()
+        let updates = await recorder.updates()
+
+        expectNoDifference(
+            updates,
+            [FavoriteUpdate(id: "abys", isFavorite: true)]
+        )
+    }
+
+    nonisolated private static func abyssinian(isFavorite: Bool) -> Breed {
+        Breed(
+            description: "Curious and social",
+            id: "abys",
+            imageURL: "https://cdn2.thecatapi.com/images/0XYvRd7oD.jpg",
+            isFavorite: isFavorite,
+            name: "Abyssinian",
+            origin: "Egypt",
+            temperament: "Active"
+        )
+    }
+}
+
+private struct FavoriteUpdate: Equatable, Sendable {
+    let id: String
+    let isFavorite: Bool
+}
+
+private actor FavoriteBreedsRecorder {
+    private var recordedUpdates: [FavoriteUpdate] = []
+
+    func record(id: String, isFavorite: Bool) {
+        self.recordedUpdates.append(
+            FavoriteUpdate(id: id, isFavorite: isFavorite)
+        )
+    }
+
+    func updates() -> [FavoriteUpdate] {
+        self.recordedUpdates
     }
 }

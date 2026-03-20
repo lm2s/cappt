@@ -1,5 +1,6 @@
 import ComposableArchitecture
 import DesignKit
+import Domain
 import SwiftUI
 
 public struct BreedDetailsView: View {
