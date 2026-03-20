@@ -18,19 +18,11 @@ public struct BreedsCacheClient: Sendable {
 
 extension BreedsCacheClient: TestDependencyKey {
     public static var previewValue: Self {
-        Self(
-            fetchBreeds: {
-                try await PersistenceController.preview.fetchBreeds()
-            },
-            saveBreeds: { breeds in
-                try await PersistenceController.preview.saveBreeds(breeds)
-            },
-            updateFavoriteBreed: { breedID, isFavorite in
-                try await PersistenceController.preview.setFavoriteBreed(
-                    id: breedID,
-                    isFavorite: isFavorite
-                )
-            }
+        let repo = BreedsRepository(controller: .preview)
+        return Self(
+            fetchBreeds: { try await repo.fetchBreeds() },
+            saveBreeds: { try await repo.saveBreeds($0) },
+            updateFavoriteBreed: { try await repo.setFavoriteBreed(id: $0, isFavorite: $1) }
         )
     }
 
@@ -45,19 +37,11 @@ extension BreedsCacheClient: TestDependencyKey {
 
 extension BreedsCacheClient: DependencyKey {
     public static var liveValue: Self {
-        Self(
-            fetchBreeds: {
-                try await PersistenceController.shared.fetchBreeds()
-            },
-            saveBreeds: { breeds in
-                try await PersistenceController.shared.saveBreeds(breeds)
-            },
-            updateFavoriteBreed: { breedID, isFavorite in
-                try await PersistenceController.shared.setFavoriteBreed(
-                    id: breedID,
-                    isFavorite: isFavorite
-                )
-            }
+        let repo = BreedsRepository(controller: .shared)
+        return Self(
+            fetchBreeds: { try await repo.fetchBreeds() },
+            saveBreeds: { try await repo.saveBreeds($0) },
+            updateFavoriteBreed: { try await repo.setFavoriteBreed(id: $0, isFavorite: $1) }
         )
     }
 }
