@@ -5,6 +5,7 @@ import SwiftUI
 
 struct BreedGridView: View {
     let breeds: [Breed]
+    var namespace: Namespace.ID
     let breedButtonTapped: (String) -> Void
     let favoriteButtonTapped: (String) -> Void
 
@@ -19,6 +20,7 @@ struct BreedGridView: View {
                 ForEach(self.breeds) { breed in
                     BreedCell(
                         breed: breed,
+                        namespace: self.namespace,
                         breedButtonTapped: { self.breedButtonTapped(breed.id) },
                         favoriteButtonTapped: { self.favoriteButtonTapped(breed.id) }
                     )

@@ -6,6 +6,7 @@ import SwiftUI
 
 struct AllBreedsView: View {
     let store: StoreOf<BreedsFeature>
+    var namespace: Namespace.ID
 
     var body: some View {
         if #available(iOS 26, *) {
@@ -41,6 +42,7 @@ struct AllBreedsView: View {
             } else {
                 BreedGridView(
                     breeds: self.store.filteredBreeds,
+                    namespace: self.namespace,
                     breedButtonTapped: { self.store.send(.breedButtonTapped(id: $0)) },
                     favoriteButtonTapped: { self.store.send(.favoriteButtonTapped(id: $0)) }
                 )

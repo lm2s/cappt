@@ -4,6 +4,7 @@ import SwiftUI
 
 struct FavoriteBreedsView: View {
     let store: StoreOf<BreedsFeature>
+    var namespace: Namespace.ID
 
     var body: some View {
         let favorites = self.store.breeds.filter(\.isFavorite)
@@ -17,6 +18,7 @@ struct FavoriteBreedsView: View {
             } else {
                 BreedGridView(
                     breeds: favorites,
+                    namespace: self.namespace,
                     breedButtonTapped: { self.store.send(.breedButtonTapped(id: $0)) },
                     favoriteButtonTapped: { self.store.send(.favoriteButtonTapped(id: $0)) }
                 )

@@ -5,9 +5,10 @@ import SwiftUI
 
 struct BreedCell: View {
     let breed: Breed
+    var namespace: Namespace.ID
     let breedButtonTapped: () -> Void
     let favoriteButtonTapped: () -> Void
-    
+
     var body: some View { // TODO: text over image with blur/glass effect
         ZStack(alignment: .topTrailing) {
             Button(action: self.breedButtonTapped) {
@@ -60,5 +61,6 @@ struct BreedCell: View {
             .accessibilityLabel(self.breed.isFavorite ? "Remove from favorites" : "Add to favorites") // TODO: localize
             .padding(8)
         }
+        .matchedTransitionSource(id: self.breed.id, in: self.namespace)
     }
 }

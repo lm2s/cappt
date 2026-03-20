@@ -5,7 +5,8 @@ import PersistenceKit
 import SwiftUI
 
 public struct BreedsView: View {
-    let store: StoreOf<BreedsFeature>
+    @Bindable var store: StoreOf<BreedsFeature>
+    @Namespace private var namespace
 
     public init(store: StoreOf<BreedsFeature>) {
         self.store = store
@@ -18,30 +19,20 @@ public struct BreedsView: View {
         )) {
             Tab("Breeds", systemImage: "square.grid.2x2", value: BreedsFeature.Tab.allBreeds) {
                 NavigationStack {
-                    AllBreedsView(store: self.store)
-                        .navigationDestination(
-                            store: self.store.scope(state: \.$breedDetails, action: \.breedDetails)
-                        ) { store in
-                            BreedDetailsView(store: store)
-                        }
+                    AllBreedsView(store: self.store, namespace: self.namespace)
                 }
             }
 
             Tab("Favorites", systemImage: "star", value: BreedsFeature.Tab.favorites) {
                 NavigationStack {
-                    FavoriteBreedsView(store: self.store)
+                    FavoriteBreedsView(store: self.store, namespace: self.namespace)
                 }
             }
 
             if #available(iOS 26.0, *) {
                 Tab(value: BreedsFeature.Tab.search, role: .search) {
                     NavigationStack {
-                        SearchBreedsView(store: self.store)
-                            .navigationDestination(
-                                store: self.store.scope(state: \.$breedDetails, action: \.breedDetails)
-                            ) { store in
-                                BreedDetailsView(store: store)
-                            }
+                        SearchBreedsView(store: self.store, namespace: self.namespace)
                     }
                     .searchable(
                         text: Binding(
@@ -51,6 +42,26 @@ public struct BreedsView: View {
                     )
                 }
             }
+        }
+        .sheet(
+            item: self.$store.scope(state: \.breedDetails, action: \.breedDetails)
+        ) { store in
+            NavigationStack {
+                BreedDetailsView(store: store)
+                    .toolbar {
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button {
+                                self.store.send(.breedDetails(.dismiss))
+                            } label: {
+                                Image(systemName: "xmark.circle.fill")
+                                    .font(.title2)
+                                    .symbolRenderingMode(.hierarchical)
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                    }
+            }
+            .navigationTransition(.zoom(sourceID: store.breed.id, in: self.namespace))
         }
         .onAppear {
             self.store.send(.onAppear)
