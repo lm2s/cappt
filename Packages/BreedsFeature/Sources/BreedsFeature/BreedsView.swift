@@ -17,17 +17,19 @@ public struct BreedsView: View {
                 get: { self.store.selectedTab },
                 set: { self.store.send(.tabSelected($0)) }
             )) {
-                AllBreedsView(store: self.store)
-                    .tag(BreedsFeature.Tab.allBreeds)
-                    .tabItem {
-                        Label("All Breeds", systemImage: "square.grid.2x2")
+                Tab("Breeds", systemImage: "square.grid.2x2", value: BreedsFeature.Tab.allBreeds) {
+                    AllBreedsView(store: self.store)
+                }
+                
+                Tab("Favorites", systemImage: "star", value: BreedsFeature.Tab.favorites) {
+                    FavoriteBreedsView(store: self.store)
+                }
+                
+                if #available (iOS 26.0, *) {
+                    Tab(value: BreedsFeature.Tab.search, role: .search) {
+                        SearchBreedsView(store: self.store)
                     }
-
-                FavoriteBreedsView(store: self.store)
-                    .tag(BreedsFeature.Tab.favorites)
-                    .tabItem {
-                        Label("Favorites", systemImage: "star")
-                    }
+                }
             }
             .navigationDestination(
                 store: self.store.scope(state: \.$breedDetails, action: \.breedDetails)
@@ -62,7 +64,7 @@ struct AllBreedsView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
                 BreedGridView(
-                    breeds: self.store.breeds,
+                    breeds: self.store.filteredBreeds,
                     breedButtonTapped: { self.store.send(.breedButtonTapped(id: $0)) },
                     favoriteButtonTapped: { self.store.send(.favoriteButtonTapped(id: $0)) }
                 )
@@ -70,6 +72,35 @@ struct AllBreedsView: View {
         }
         .background(AppTheme.Colors.background.ignoresSafeArea())
         .navigationTitle("Breeds")
+        .navigationBarTitleDisplayMode(.large)
+        .searchable(
+            text: Binding(
+                get: { self.store.searchText },
+                set: { self.store.send(.searchTextChanged($0)) }
+            )
+        )
+    }
+}
+
+struct SearchBreedsView: View {
+    let store: StoreOf<BreedsFeature>
+
+    var body: some View {
+        Group {
+            if self.store.searchText.isEmpty {
+                ContentUnavailableView.search
+            } else if self.store.filteredBreeds.isEmpty {
+                ContentUnavailableView.search(text: self.store.searchText)
+            } else {
+                BreedGridView(
+                    breeds: self.store.filteredBreeds,
+                    breedButtonTapped: { self.store.send(.breedButtonTapped(id: $0)) },
+                    favoriteButtonTapped: { self.store.send(.favoriteButtonTapped(id: $0)) }
+                )
+            }
+        }
+        .background(AppTheme.Colors.background.ignoresSafeArea())
+        .navigationTitle("Search")
         .navigationBarTitleDisplayMode(.large)
     }
 }

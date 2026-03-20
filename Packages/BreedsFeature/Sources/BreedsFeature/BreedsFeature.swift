@@ -10,6 +10,7 @@ public struct BreedsFeature {
     public enum Tab: Equatable {
         case allBreeds
         case favorites
+        case search
     }
 
     @ObservableState
@@ -19,7 +20,15 @@ public struct BreedsFeature {
         var isLoading = false
         var hasError = false
         var selectedTab: Tab = .allBreeds
+        var searchText = ""
         @Presents var breedDetails: BreedDetails.State?
+
+        var filteredBreeds: [Breed] {
+            guard !searchText.isEmpty else { return breeds }
+            return breeds.filter {
+                $0.name.localizedCaseInsensitiveContains(searchText)
+            }
+        }
 
         public init() {}
     }
@@ -31,6 +40,7 @@ public struct BreedsFeature {
         case onAppear
         case favoriteButtonTapped(id: String)
         case retryButtonTapped
+        case searchTextChanged(String)
         case tabSelected(Tab)
     }
 
@@ -110,6 +120,10 @@ public struct BreedsFeature {
 
             case let .favoriteButtonTapped(id):
                 return self.persistFavoriteToggle(&state, id: id)
+
+            case let .searchTextChanged(text):
+                state.searchText = text
+                return .none
 
             case let .tabSelected(tab):
                 state.selectedTab = tab
