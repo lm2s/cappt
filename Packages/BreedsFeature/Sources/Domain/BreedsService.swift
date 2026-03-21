@@ -14,7 +14,34 @@ public struct BreedsService: Sendable {
         Self {
             let (data, _) = try await apiClient.data(for: BreedsEndpoint.breeds())
             let response = try JSONDecoder().decode([BreedResponse].self, from: data)
-            return response.map(\.breed)
+
+            let imageURLsByID = try await withThrowingTaskGroup(
+                of: (String, String).self,
+                returning: [String: String].self
+            ) { group in
+                for breed in response {
+                    guard breed.image == nil, let referenceImageID = breed.referenceImageID else {
+                        continue
+                    }
+                    group.addTask {
+                        let (data, _) = try await apiClient.data(
+                            for: BreedsEndpoint.image(id: referenceImageID)
+                        )
+                        let imageResponse = try JSONDecoder().decode(
+                            ImageResponse.self,
+                            from: data
+                        )
+                        return (breed.id, imageResponse.url)
+                    }
+                }
+                var result: [String: String] = [:]
+                for try await (id, url) in group {
+                    result[id] = url
+                }
+                return result
+            }
+
+            return response.map { $0.breed(imageURL: $0.image?.url ?? imageURLsByID[$0.id] ?? "") }
         }
     }
 }
@@ -54,12 +81,18 @@ private struct BreedResponse: Decodable, Sendable {
     let lifeSpan: String?
     let name: String
     let origin: String?
+    let image: BreedImage?
     let referenceImageID: String?
     let temperament: String?
+
+    struct BreedImage: Decodable, Sendable {
+        let url: String
+    }
 
     enum CodingKeys: String, CodingKey {
         case description
         case id
+        case image
         case lifeSpan = "life_span"
         case name
         case origin
@@ -67,12 +100,12 @@ private struct BreedResponse: Decodable, Sendable {
         case temperament
     }
 
-    var breed: Breed {
+    func breed(imageURL: String) -> Breed {
         let parsedLifeSpan = Breed.parseLifeSpan(self.lifeSpan ?? "")
         return Breed(
             description: self.description ?? "",
             id: self.id,
-            imageURL: self.referenceImageID.map(Self.imageURL(for:)) ?? "",
+            imageURL: imageURL,
             isFavorite: false,
             lifeSpanLowerBound: parsedLifeSpan.lower,
             lifeSpanUpperBound: parsedLifeSpan.upper,
@@ -81,8 +114,8 @@ private struct BreedResponse: Decodable, Sendable {
             temperament: self.temperament ?? ""
         )
     }
+}
 
-    private static func imageURL(for referenceImageID: String) -> String {
-        "https://cdn2.thecatapi.com/images/\(referenceImageID).jpg"
-    }
+private struct ImageResponse: Decodable, Sendable {
+    let url: String
 }

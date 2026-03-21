@@ -3,8 +3,16 @@ import NetworkKit
 
 public enum BreedsEndpoint: EndpointType {
     case breeds(limit: Int? = nil, page: Int? = nil)
+    case image(id: String)
 
-    public var path: String { "breeds" }
+    public var path: String {
+        switch self {
+        case .breeds:
+            "breeds"
+        case let .image(id):
+            "images/\(id)"
+        }
+    }
 
     public var queryItems: [URLQueryItem] {
         switch self {
@@ -17,6 +25,8 @@ public enum BreedsEndpoint: EndpointType {
                 guard item.value != nil else { return nil }
                 return item
             }
+        case .image:
+            return []
         }
     }
 }
