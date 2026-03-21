@@ -19,6 +19,7 @@ public struct BreedDetailsView: View {
                         .fontDesign(.serif)
                         .foregroundStyle(.primary)
                         .frame(maxWidth: .infinity, alignment: .leading)
+                        .accessibilityIdentifier("breed-detail-name")
                     
                     Button {
                         self.store.send(.favoriteButtonTapped)
@@ -31,6 +32,7 @@ public struct BreedDetailsView: View {
                     }
                     .buttonStyle(.plain)
                     .accessibilityLabel(Text(self.store.breed.isFavorite ? "accessibility.favorites.remove" : "accessibility.favorites.add", bundle: .module))
+                    .accessibilityIdentifier("detail-favorite-button")
                 }
                 
                 BreedHeroImage(
@@ -39,8 +41,11 @@ public struct BreedDetailsView: View {
                 )
 
                 Card { Text(self.store.breed.description) }
+                    .accessibilityIdentifier("breed-detail-description")
                 BreedFactsCard(title: String(localized: "details.origin", bundle: .module), value: self.store.breed.origin)
+                    .accessibilityIdentifier("breed-detail-origin")
                 BreedFactsCard(title: String(localized: "details.temperament", bundle: .module), value: self.store.breed.temperament)
+                    .accessibilityIdentifier("breed-detail-temperament")
             }
             .padding(.horizontal, AppTheme.Layout.screenPadding)
             .padding(.vertical, 20)

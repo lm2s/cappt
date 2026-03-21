@@ -57,6 +57,7 @@ public struct BreedsListView: View {
                                     .font(.title2)
                                     .symbolRenderingMode(.hierarchical)
                                     .foregroundStyle(.secondary)
+                                    .accessibilityIdentifier("dismiss-detail-button")
                             }
                         }
                     }

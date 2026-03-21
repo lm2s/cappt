@@ -20,6 +20,7 @@ struct FavoriteBreedsView: View {
                 } description: {
                     Text("favorites.empty.message", bundle: .module)
                 }
+                .accessibilityIdentifier("favorites-empty-state")
             } else {
                 VStack(spacing: 0) {
                     if let average = self.averageLifeSpan(of: favorites) {
@@ -29,6 +30,7 @@ struct FavoriteBreedsView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.horizontal)
                             .padding(.vertical, 8)
+                            .accessibilityIdentifier("average-lifespan")
                     }
                     BreedGridView(
                         breeds: favorites,

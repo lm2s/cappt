@@ -40,12 +40,14 @@ struct AllBreedsView: View {
                     } label: {
                         Text("error.retry", bundle: .module)
                     }
+                    .accessibilityIdentifier("retry-button")
                     .buttonStyle(.bordered)
                 }
             } else if self.store.isLoading && self.store.breeds.isEmpty {
                 ProgressView {
                     Text("loading.message", bundle: .module)
                 }
+                    .accessibilityIdentifier("loading-indicator")
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
                 BreedGridView(

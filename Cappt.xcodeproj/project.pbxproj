@@ -12,8 +12,20 @@
 		8777ED75C44C61A359B9E4B5 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB5C166189212482BE9F577D /* AppView.swift */; };
 		A04F3C412F6DB4C900FA34F3 /* AppUI in Frameworks */ = {isa = PBXBuildFile; productRef = A04F3C402F6DB4C900FA34F3 /* AppUI */; };
 		A80BA3F486D16D8C27C81F0A /* CapptApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E948A2AE663DD845DD1EB3AE /* CapptApp.swift */; };
+		B1A2C3D4E5F60718293A4B5C /* PersistenceKit in Frameworks */ = {isa = PBXBuildFile; productRef = C2B3D4E5F6071829A3B4C5D6 /* PersistenceKit */; };
 		ECAF79F5C9B50ADF339B47E9 /* BreedsFeature in Frameworks */ = {isa = PBXBuildFile; productRef = E9D64AAF386318A0F04B793A /* BreedsFeature */; };
+		F1A2B3C4D5E6F708192A3B4C /* BreedsListUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2B3C4D5E6F708192A3B4C5D /* BreedsListUITests.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D1E2F3A4B5C6D7E8F9A0B1C2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 37CBFAEE6B152775F3FAE42B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D4DE1E162604BFD7DECB9B2D;
+			remoteInfo = Cappt;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		2448FF0929DA083BCB390782 /* PersistenceKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = PersistenceKit; path = Packages/PersistenceKit; sourceTree = SOURCE_ROOT; };
@@ -23,6 +35,8 @@
 		8EC570DAC93B1EFFC5813E50 /* BreedsFeature */ = {isa = PBXFileReference; lastKnownFileType = folder; name = BreedsFeature; path = Packages/BreedsFeature; sourceTree = SOURCE_ROOT; };
 		E948A2AE663DD845DD1EB3AE /* CapptApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapptApp.swift; sourceTree = "<group>"; };
 		E95D1EFE56394F05952D1344 /* AppFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeature.swift; sourceTree = "<group>"; };
+		F2B3C4D5E6F708192A3B4C5D /* BreedsListUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedsListUITests.swift; sourceTree = "<group>"; };
+		F3C4D5E6A7B8C9D0E1F2A3B4 /* CapptUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CapptUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB5C166189212482BE9F577D /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -34,6 +48,14 @@
 				A04F3C412F6DB4C900FA34F3 /* AppUI in Frameworks */,
 				ECAF79F5C9B50ADF339B47E9 /* BreedsFeature in Frameworks */,
 				13B70F4BF9C933A93C2B088A /* ComposableArchitecture in Frameworks */,
+				B1A2C3D4E5F60718293A4B5C /* PersistenceKit in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F4D5E6A7B8C9D0E1F2A3B4C5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,6 +85,7 @@
 			isa = PBXGroup;
 			children = (
 				52F322118970FB88D5399E69 /* Cappt.app */,
+				F3C4D5E6A7B8C9D0E1F2A3B4 /* CapptUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -89,6 +112,7 @@
 			isa = PBXGroup;
 			children = (
 				228C70C330C085DE8EB9A2B5 /* Cappt */,
+				F5E6A7B8C9D0E1F2A3B4C5D6 /* CapptUITests */,
 				A82E6D57E190BED825339A71 /* Packages */,
 				80041DD5AABE6331DB83AEF0 /* Products */,
 			);
@@ -100,6 +124,14 @@
 				5FAA588E16BEB38E18CF1A6F /* NetworkKit */,
 			);
 			path = NetworkKit;
+			sourceTree = "<group>";
+		};
+		F5E6A7B8C9D0E1F2A3B4C5D6 /* CapptUITests */ = {
+			isa = PBXGroup;
+			children = (
+				F2B3C4D5E6F708192A3B4C5D /* BreedsListUITests.swift */,
+			);
+			path = CapptUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -121,10 +153,28 @@
 				E9D64AAF386318A0F04B793A /* BreedsFeature */,
 				D957597F495EDB56C99AD90E /* ComposableArchitecture */,
 				A04F3C402F6DB4C900FA34F3 /* AppUI */,
+				C2B3D4E5F6071829A3B4C5D6 /* PersistenceKit */,
 			);
 			productName = Cappt;
 			productReference = 52F322118970FB88D5399E69 /* Cappt.app */;
 			productType = "com.apple.product-type.application";
+		};
+		E1F2A3B4C5D6E7F8A9B0C1D2 /* CapptUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E2A3B4C5D6E7F8A9B0C1D2E3 /* Build configuration list for PBXNativeTarget "CapptUITests" */;
+			buildPhases = (
+				F6A7B8C9D0E1F2A3B4C5D6E7 /* Sources */,
+				F4D5E6A7B8C9D0E1F2A3B4C5 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E3B4C5D6E7F8A9B0C1D2E3F4 /* PBXTargetDependency */,
+			);
+			name = CapptUITests;
+			productName = CapptUITests;
+			productReference = F3C4D5E6A7B8C9D0E1F2A3B4 /* CapptUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
 
@@ -157,6 +207,7 @@
 			projectRoot = "";
 			targets = (
 				D4DE1E162604BFD7DECB9B2D /* Cappt */,
+				E1F2A3B4C5D6E7F8A9B0C1D2 /* CapptUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -172,7 +223,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F6A7B8C9D0E1F2A3B4C5D6E7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F1A2B3C4D5E6F708192A3B4C /* BreedsListUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E3B4C5D6E7F8A9B0C1D2E3F4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D4DE1E162604BFD7DECB9B2D /* Cappt */;
+			targetProxy = D1E2F3A4B5C6D7E8F9A0B1C2 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		148695C559E0DBC29F174EC4 /* Debug */ = {
@@ -328,6 +395,44 @@
 			};
 			name = Release;
 		};
+		E4C5D6E7F8A9B0C1D2E3F4A5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = FGA89NJBJF;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.sword.challenge.cappt.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Cappt;
+			};
+			name = Debug;
+		};
+		E5D6E7F8A9B0C1D2E3F4A5B6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = FGA89NJBJF;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.sword.challenge.cappt.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Cappt;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -336,6 +441,15 @@
 			buildConfigurations = (
 				148695C559E0DBC29F174EC4 /* Debug */,
 				DD5E794023FDCAD3514D3B50 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E2A3B4C5D6E7F8A9B0C1D2E3 /* Build configuration list for PBXNativeTarget "CapptUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E4C5D6E7F8A9B0C1D2E3F4A5 /* Debug */,
+				E5D6E7F8A9B0C1D2E3F4A5B6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
@@ -385,6 +499,10 @@
 		A04F3C402F6DB4C900FA34F3 /* AppUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = AppUI;
+		};
+		C2B3D4E5F6071829A3B4C5D6 /* PersistenceKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PersistenceKit;
 		};
 		D957597F495EDB56C99AD90E /* ComposableArchitecture */ = {
 			isa = XCSwiftPackageProductDependency;
