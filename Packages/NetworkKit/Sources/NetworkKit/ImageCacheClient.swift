@@ -42,6 +42,7 @@ public extension DependencyValues {
 private actor ImageCache {
     private let memoryCache = NSCache<NSString, UIImage>()
     private let cacheDirectory: URL
+    private var inFlight: [URL: Task<UIImage, Error>] = [:]
 
     init() {
         let caches = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
@@ -56,28 +57,44 @@ private actor ImageCache {
             return cached
         }
 
-        let diskPath = self.diskURL(for: url)
-        if let image = await Task.detached(priority: .userInitiated, operation: { // Make sure disk read is not executed in main thread
-            guard let data = try? Data(contentsOf: diskPath) else { return nil as UIImage? }
-            return UIImage(data: data)
-        }).value {
-            self.memoryCache.setObject(image, forKey: key)
+        if let existing = self.inFlight[url] {
+            return try await existing.value
+        }
+
+        let task = Task<UIImage, Error> { [cacheDirectory] in
+            let diskPath = Self.diskURL(for: url, in: cacheDirectory)
+            if let image = await Task.detached(priority: .userInitiated, operation: {
+                guard let data = try? Data(contentsOf: diskPath) else { return nil as UIImage? }
+                return UIImage(data: data)
+            }).value {
+                return image
+            }
+
+            let (data, _) = try await URLSession.shared.data(from: url)
+            guard let image = UIImage(data: data) else {
+                throw ImageCacheError.invalidImageData
+            }
+            try? data.write(to: diskPath)
             return image
         }
 
-        let (data, _) = try await URLSession.shared.data(from: url)
-        guard let image = UIImage(data: data) else {
-            throw ImageCacheError.invalidImageData
+        self.inFlight[url] = task
+
+        do {
+            let image = try await task.value
+            self.memoryCache.setObject(image, forKey: key)
+            self.inFlight[url] = nil
+            return image
+        } catch {
+            self.inFlight[url] = nil
+            throw error
         }
-        self.memoryCache.setObject(image, forKey: key)
-        try? data.write(to: diskPath)
-        return image
     }
 
-    private func diskURL(for url: URL) -> URL {
+    private static func diskURL(for url: URL, in directory: URL) -> URL {
         let hash = SHA256.hash(data: Data(url.absoluteString.utf8))
         let filename = hash.compactMap { String(format: "%02x", $0) }.joined()
-        return self.cacheDirectory.appendingPathComponent(filename)
+        return directory.appendingPathComponent(filename)
     }
 }
 
