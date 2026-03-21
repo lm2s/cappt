@@ -13,7 +13,7 @@ struct CapptApp: App {
                         AppFeature()
                     } withDependencies: {
                         $0.breedsService = .init(
-                            fetchBreeds: { Breed.mock.map { breed in
+                            fetchBreeds: { _, _ in Breed.mock.map { breed in
                                 var breed = breed
                                 breed.isFavorite = false
                                 return breed

@@ -7,6 +7,8 @@ public struct BreedsList {
     @Dependency(\.breedsService) var breedsService
     @Dependency(\.breedsCacheClient) var breedsCacheClient
 
+    static let pageSize = 15
+
     public enum Tab: Equatable {
         case allBreeds
         case favorites
@@ -18,7 +20,10 @@ public struct BreedsList {
         var hasLoadedBreeds = false
         var breeds: [Breed] = []
         var isLoading = false
+        var isLoadingMore = false
         var hasError = false
+        var hasMorePages = true
+        var currentPage = 0
         var selectedTab: Tab = .allBreeds
         var searchText = ""
         @Presents var breedDetails: BreedDetails.State?
@@ -37,6 +42,7 @@ public struct BreedsList {
         case breedButtonTapped(id: String)
         case breedsResponse(Result<[Breed], Error>)
         case breedDetails(PresentationAction<BreedDetails.Action>)
+        case loadMoreBreeds
         case onAppear
         case favoriteButtonTapped(id: String)
         case retryButtonTapped
@@ -57,13 +63,20 @@ public struct BreedsList {
                 return .none
 
             case let .breedsResponse(.success(breeds)):
-                state.breeds = breeds
+                if state.isLoadingMore {
+                    state.breeds.append(contentsOf: breeds)
+                    state.currentPage += 1
+                } else {
+                    state.breeds = breeds
+                }
                 state.hasLoadedBreeds = true
                 state.isLoading = false
+                state.isLoadingMore = false
                 state.hasError = false
+                state.hasMorePages = breeds.count >= BreedsList.pageSize
 
                 if let selectedID = state.breedDetails?.breed.id,
-                   let updatedBreed = breeds.first(where: { $0.id == selectedID }) {
+                   let updatedBreed = state.breeds.first(where: { $0.id == selectedID }) {
                     state.breedDetails = BreedDetails.State(breed: updatedBreed)
                 }
 
@@ -71,6 +84,7 @@ public struct BreedsList {
 
             case .breedsResponse(.failure):
                 state.isLoading = false
+                state.isLoadingMore = false
                 state.hasError = true
                 return .none
 
@@ -83,39 +97,29 @@ public struct BreedsList {
             case .breedDetails:
                 return .none
 
+            case .loadMoreBreeds:
+                guard !state.isLoading, !state.isLoadingMore, state.hasMorePages else {
+                    return .none
+                }
+
+                state.isLoadingMore = true
+                let page = state.currentPage + 1
+                return self.fetchBreedsPage(page: page, state: &state)
+
             case .onAppear:
                 guard !state.hasLoadedBreeds, !state.isLoading else {
                     return .none
                 }
 
                 state.isLoading = true
-                let fetchBreeds = self.breedsService.fetchBreeds
-                let fetchCachedBreeds = self.breedsCacheClient.fetchBreeds
-                let saveBreeds = self.breedsCacheClient.saveBreeds
-                return .run { send in
-                    do {
-                        let breeds = try await fetchBreeds()
-                        let cachedBreeds = (try? await fetchCachedBreeds()) ?? []
-                        let favoriteBreedIDs = Self.favoriteBreedIDs(from: cachedBreeds)
-                        let mergedBreeds = Self.mergingFavorites(
-                            in: breeds,
-                            favoriteBreedIDs: favoriteBreedIDs
-                        )
-                        try? await saveBreeds(mergedBreeds)
-                        await send(.breedsResponse(.success(mergedBreeds)))
-                    } catch {
-                        let cachedBreeds = (try? await fetchCachedBreeds()) ?? []
-                        if !cachedBreeds.isEmpty {
-                            await send(.breedsResponse(.success(cachedBreeds)))
-                        } else {
-                            await send(.breedsResponse(.failure(error)))
-                        }
-                    }
-                }
+                return self.fetchBreedsPage(page: 0, state: &state)
 
             case .retryButtonTapped:
                 state.hasError = false
                 state.hasLoadedBreeds = false
+                state.currentPage = 0
+                state.hasMorePages = true
+                state.breeds = []
                 return .send(.onAppear)
 
             case let .favoriteButtonTapped(id):
@@ -137,6 +141,37 @@ public struct BreedsList {
 }
 
 private extension BreedsList {
+    func fetchBreedsPage(page: Int, state: inout State) -> Effect<Action> {
+        let fetchBreeds = self.breedsService.fetchBreeds
+        let fetchCachedBreeds = self.breedsCacheClient.fetchBreeds
+        let saveBreeds = self.breedsCacheClient.saveBreeds
+        let pageSize = BreedsList.pageSize
+        return .run { send in
+            do {
+                let breeds = try await fetchBreeds(pageSize, page)
+                let cachedBreeds = (try? await fetchCachedBreeds()) ?? []
+                let favoriteBreedIDs = Self.favoriteBreedIDs(from: cachedBreeds)
+                let mergedBreeds = Self.mergingFavorites(
+                    in: breeds,
+                    favoriteBreedIDs: favoriteBreedIDs
+                )
+                try? await saveBreeds(mergedBreeds)
+                await send(.breedsResponse(.success(mergedBreeds)))
+            } catch {
+                if page == 0 {
+                    let cachedBreeds = (try? await fetchCachedBreeds()) ?? []
+                    if !cachedBreeds.isEmpty {
+                        await send(.breedsResponse(.success(cachedBreeds)))
+                    } else {
+                        await send(.breedsResponse(.failure(error)))
+                    }
+                } else {
+                    await send(.breedsResponse(.failure(error)))
+                }
+            }
+        }
+    }
+
     func persistFavoriteToggle(_ state: inout State, id: Breed.ID) -> Effect<Action> {
         guard let isFavorite = Self.toggleFavorite(&state, id: id) else {
             return .none

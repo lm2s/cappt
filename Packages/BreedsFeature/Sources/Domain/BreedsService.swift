@@ -4,15 +4,15 @@ import Foundation
 import NetworkKit
 
 public struct BreedsService: Sendable {
-    public var fetchBreeds: @Sendable () async throws -> [Breed]
+    public var fetchBreeds: @Sendable (_ limit: Int, _ page: Int) async throws -> [Breed]
 
-    public init(fetchBreeds: @escaping @Sendable () async throws -> [Breed]) {
+    public init(fetchBreeds: @escaping @Sendable (_ limit: Int, _ page: Int) async throws -> [Breed]) {
         self.fetchBreeds = fetchBreeds
     }
-    
+
     static func live(apiClient: APIClient) -> Self {
-        Self {
-            let (data, _) = try await apiClient.data(for: BreedsEndpoint.breeds())
+        Self { limit, page in
+            let (data, _) = try await apiClient.data(for: BreedsEndpoint.breeds(limit: limit, page: page))
             let response = try JSONDecoder().decode([BreedResponse].self, from: data)
 
             let imageURLsByID = try await withThrowingTaskGroup(
@@ -48,11 +48,11 @@ public struct BreedsService: Sendable {
 
 extension BreedsService: TestDependencyKey {
     public static var previewValue: Self {
-        Self(fetchBreeds: { Breed.mock })
+        Self(fetchBreeds: { _, _ in Breed.mock })
     }
 
     public static var testValue: Self {
-        Self(fetchBreeds: { [] })
+        Self(fetchBreeds: { _, _ in [] })
     }
 }
 

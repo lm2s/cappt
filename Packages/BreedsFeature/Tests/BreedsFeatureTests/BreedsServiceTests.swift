@@ -66,7 +66,7 @@ struct BreedsServiceTests {
             )
         )
 
-        let breeds = try await service.fetchBreeds()
+        let breeds = try await service.fetchBreeds(15, 0)
 
         expectNoDifference(
             breeds,
@@ -132,7 +132,7 @@ struct BreedsServiceTests {
             )
         )
 
-        let breeds = try await service.fetchBreeds()
+        let breeds = try await service.fetchBreeds(15, 0)
 
         expectNoDifference(
             breeds,

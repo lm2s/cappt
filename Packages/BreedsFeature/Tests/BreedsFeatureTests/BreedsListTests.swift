@@ -18,7 +18,7 @@ struct BreedsListTests {
         let store = TestStore(initialState: initialState) {
             BreedsList()
         } withDependencies: {
-            $0.breedsService.fetchBreeds = {
+            $0.breedsService.fetchBreeds = { _, _ in
                 [Self.abyssinian(isFavorite: false)]
             }
             $0.breedsCacheClient.fetchBreeds = {
@@ -34,6 +34,7 @@ struct BreedsListTests {
             $0.breeds = [Self.abyssinian(isFavorite: true)]
             $0.hasLoadedBreeds = true
             $0.isLoading = false
+            $0.hasMorePages = false
         }
     }
 
@@ -47,7 +48,7 @@ struct BreedsListTests {
         let store = TestStore(initialState: initialState) {
             BreedsList()
         } withDependencies: {
-            $0.breedsService.fetchBreeds = {
+            $0.breedsService.fetchBreeds = { _, _ in
                 throw TestError()
             }
             $0.breedsCacheClient.fetchBreeds = {
@@ -62,6 +63,7 @@ struct BreedsListTests {
             $0.breeds = [Self.abyssinian(isFavorite: true)]
             $0.hasLoadedBreeds = true
             $0.isLoading = false
+            $0.hasMorePages = false
         }
     }
 
@@ -72,7 +74,7 @@ struct BreedsListTests {
         let store = TestStore(initialState: BreedsList.State()) {
             BreedsList()
         } withDependencies: {
-            $0.breedsService.fetchBreeds = {
+            $0.breedsService.fetchBreeds = { _, _ in
                 throw TestError()
             }
             $0.breedsCacheClient.fetchBreeds = { [] }
@@ -90,12 +92,12 @@ struct BreedsListTests {
     @Test
     func retryAfterFailureReloadsBreeds() async {
         struct TestError: Error {}
-        var shouldFail = true
+        nonisolated(unsafe) var shouldFail = true
 
         let store = TestStore(initialState: BreedsList.State()) {
             BreedsList()
         } withDependencies: {
-            $0.breedsService.fetchBreeds = {
+            $0.breedsService.fetchBreeds = { _, _ in
                 if shouldFail {
                     throw TestError()
                 }
@@ -118,6 +120,9 @@ struct BreedsListTests {
         await store.send(.retryButtonTapped) {
             $0.hasError = false
             $0.hasLoadedBreeds = false
+            $0.currentPage = 0
+            $0.hasMorePages = true
+            $0.breeds = []
         }
         await store.receive(\.onAppear) {
             $0.isLoading = true
@@ -126,6 +131,7 @@ struct BreedsListTests {
             $0.breeds = [Self.abyssinian(isFavorite: false)]
             $0.hasLoadedBreeds = true
             $0.isLoading = false
+            $0.hasMorePages = false
         }
     }
 
@@ -186,6 +192,62 @@ struct BreedsListTests {
         )
     }
 
+    @Test
+    func loadMoreBreedsAppendsNextPage() async {
+        var initialState = BreedsList.State()
+        initialState.hasLoadedBreeds = true
+        initialState.breeds = [Self.abyssinian(isFavorite: false)]
+        initialState.currentPage = 0
+        initialState.hasMorePages = true
+
+        let store = TestStore(initialState: initialState) {
+            BreedsList()
+        } withDependencies: {
+            $0.breedsService.fetchBreeds = { _, _ in
+                [Self.bengal(isFavorite: false)]
+            }
+            $0.breedsCacheClient.fetchBreeds = { [] }
+            $0.breedsCacheClient.saveBreeds = { _ in }
+        }
+
+        await store.send(.loadMoreBreeds) {
+            $0.isLoadingMore = true
+        }
+        await store.receive(\.breedsResponse.success) {
+            $0.breeds = [Self.abyssinian(isFavorite: false), Self.bengal(isFavorite: false)]
+            $0.isLoadingMore = false
+            $0.hasMorePages = false
+            $0.currentPage = 1
+        }
+    }
+
+    @Test
+    func loadMoreBreedsIgnoredWhileLoading() async {
+        var initialState = BreedsList.State()
+        initialState.hasLoadedBreeds = true
+        initialState.isLoadingMore = true
+        initialState.hasMorePages = true
+
+        let store = TestStore(initialState: initialState) {
+            BreedsList()
+        }
+
+        await store.send(.loadMoreBreeds)
+    }
+
+    @Test
+    func loadMoreBreedsIgnoredWhenNoMorePages() async {
+        var initialState = BreedsList.State()
+        initialState.hasLoadedBreeds = true
+        initialState.hasMorePages = false
+
+        let store = TestStore(initialState: initialState) {
+            BreedsList()
+        }
+
+        await store.send(.loadMoreBreeds)
+    }
+
     nonisolated private static func abyssinian(isFavorite: Bool) -> Breed {
         Breed(
             description: "Curious and social",
@@ -197,6 +259,20 @@ struct BreedsListTests {
             name: "Abyssinian",
             origin: "Egypt",
             temperament: "Active"
+        )
+    }
+
+    nonisolated private static func bengal(isFavorite: Bool) -> Breed {
+        Breed(
+            description: "Energetic and playful",
+            id: "beng",
+            imageURL: "https://cdn2.thecatapi.com/images/O3btzLlsO.jpg",
+            isFavorite: isFavorite,
+            lifeSpanLowerBound: 12,
+            lifeSpanUpperBound: 15,
+            name: "Bengal",
+            origin: "United States",
+            temperament: "Alert"
         )
     }
 }

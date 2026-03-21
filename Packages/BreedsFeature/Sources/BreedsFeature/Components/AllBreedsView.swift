@@ -54,7 +54,9 @@ struct AllBreedsView: View {
                     breeds: self.store.filteredBreeds,
                     namespace: self.namespace,
                     breedButtonTapped: { self.store.send(.breedButtonTapped(id: $0)) },
-                    favoriteButtonTapped: { self.store.send(.favoriteButtonTapped(id: $0)) }
+                    favoriteButtonTapped: { self.store.send(.favoriteButtonTapped(id: $0)) },
+                    isLoadingMore: self.store.isLoadingMore,
+                    onLoadMore: self.store.hasMorePages ? { self.store.send(.loadMoreBreeds) } : nil
                 )
             }
         }
