@@ -4,11 +4,11 @@ import AppUI
 import PersistenceKit
 import SwiftUI
 
-public struct BreedsView: View {
-    @Bindable var store: StoreOf<BreedsFeature>
+public struct BreedsListView: View {
+    @Bindable var store: StoreOf<BreedsList>
     @Namespace private var namespace
 
-    public init(store: StoreOf<BreedsFeature>) {
+    public init(store: StoreOf<BreedsList>) {
         self.store = store
     }
 
@@ -17,20 +17,20 @@ public struct BreedsView: View {
             get: { self.store.selectedTab },
             set: { self.store.send(.tabSelected($0)) }
         )) {
-            Tab(String(localized: "tab.breeds", bundle: .module), systemImage: "square.grid.2x2", value: BreedsFeature.Tab.allBreeds) {
+            Tab(String(localized: "tab.breeds", bundle: .module), systemImage: "square.grid.2x2", value: BreedsList.Tab.allBreeds) {
                 NavigationStack {
                     AllBreedsView(store: self.store, namespace: self.namespace)
                 }
             }
 
-            Tab(String(localized: "tab.favorites", bundle: .module), systemImage: "star", value: BreedsFeature.Tab.favorites) {
+            Tab(String(localized: "tab.favorites", bundle: .module), systemImage: "star", value: BreedsList.Tab.favorites) {
                 NavigationStack {
                     FavoriteBreedsView(store: self.store, namespace: self.namespace)
                 }
             }
 
             if #available(iOS 26.0, *) {
-                Tab(value: BreedsFeature.Tab.search, role: .search) {
+                Tab(value: BreedsList.Tab.search, role: .search) {
                     NavigationStack {
                         SearchBreedsView(store: self.store, namespace: self.namespace)
                     }
@@ -70,9 +70,9 @@ public struct BreedsView: View {
 }
 
 #Preview {
-    BreedsView(
-        store: Store(initialState: BreedsFeature.State()) {
-            BreedsFeature()
+    BreedsListView(
+        store: Store(initialState: BreedsList.State()) {
+            BreedsList()
         }
     )
 }

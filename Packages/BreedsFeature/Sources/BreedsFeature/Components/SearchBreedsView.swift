@@ -3,7 +3,7 @@ import AppUI
 import SwiftUI
 
 struct SearchBreedsView: View {
-    let store: StoreOf<BreedsFeature>
+    let store: StoreOf<BreedsList>
     var namespace: Namespace.ID
 
     var body: some View {

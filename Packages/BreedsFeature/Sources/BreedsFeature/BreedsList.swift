@@ -3,7 +3,7 @@ import ComposableArchitecture
 import PersistenceKit
 
 @Reducer
-public struct BreedsFeature {
+public struct BreedsList {
     @Dependency(\.breedsService) var breedsService
     @Dependency(\.breedsCacheClient) var breedsCacheClient
 
@@ -136,7 +136,7 @@ public struct BreedsFeature {
     }
 }
 
-private extension BreedsFeature {
+private extension BreedsList {
     func persistFavoriteToggle(_ state: inout State, id: Breed.ID) -> Effect<Action> {
         guard let isFavorite = Self.toggleFavorite(&state, id: id) else {
             return .none

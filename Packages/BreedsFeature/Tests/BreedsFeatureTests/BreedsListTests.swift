@@ -9,14 +9,14 @@ import Testing
 @testable import BreedsFeature
 
 @MainActor
-struct BreedsFeatureTests {
+struct BreedsListTests {
     @Test
     func onAppearLoadsBreedsWithCachedFavorites() async {
-        var initialState = BreedsFeature.State()
+        var initialState = BreedsList.State()
         initialState.breeds = [Self.abyssinian(isFavorite: false)]
 
         let store = TestStore(initialState: initialState) {
-            BreedsFeature()
+            BreedsList()
         } withDependencies: {
             $0.breedsService.fetchBreeds = {
                 [Self.abyssinian(isFavorite: false)]
@@ -41,11 +41,11 @@ struct BreedsFeatureTests {
     func onAppearFallsBackToCacheOnNetworkFailure() async {
         struct TestError: Error {}
 
-        var initialState = BreedsFeature.State()
+        var initialState = BreedsList.State()
         initialState.breeds = [Self.abyssinian(isFavorite: false)]
 
         let store = TestStore(initialState: initialState) {
-            BreedsFeature()
+            BreedsList()
         } withDependencies: {
             $0.breedsService.fetchBreeds = {
                 throw TestError()
@@ -69,8 +69,8 @@ struct BreedsFeatureTests {
     func onAppearFailureWithEmptyCacheStopsLoading() async {
         struct TestError: Error {}
 
-        let store = TestStore(initialState: BreedsFeature.State()) {
-            BreedsFeature()
+        let store = TestStore(initialState: BreedsList.State()) {
+            BreedsList()
         } withDependencies: {
             $0.breedsService.fetchBreeds = {
                 throw TestError()
@@ -92,8 +92,8 @@ struct BreedsFeatureTests {
         struct TestError: Error {}
         var shouldFail = true
 
-        let store = TestStore(initialState: BreedsFeature.State()) {
-            BreedsFeature()
+        let store = TestStore(initialState: BreedsList.State()) {
+            BreedsList()
         } withDependencies: {
             $0.breedsService.fetchBreeds = {
                 if shouldFail {
@@ -133,11 +133,11 @@ struct BreedsFeatureTests {
     func favoriteButtonTappedPersistsFavorite() async {
         let recorder = FavoriteBreedsRecorder()
 
-        var initialState = BreedsFeature.State()
+        var initialState = BreedsList.State()
         initialState.breeds = [Self.abyssinian(isFavorite: false)]
 
         let store = TestStore(initialState: initialState) {
-            BreedsFeature()
+            BreedsList()
         } withDependencies: {
             $0.breedsCacheClient.updateFavoriteBreed = { id, isFavorite in
                 await recorder.record(id: id, isFavorite: isFavorite)
@@ -161,12 +161,12 @@ struct BreedsFeatureTests {
         let recorder = FavoriteBreedsRecorder()
         let breed = Self.abyssinian(isFavorite: false)
 
-        var initialState = BreedsFeature.State()
+        var initialState = BreedsList.State()
         initialState.breeds = [breed]
         initialState.breedDetails = BreedDetails.State(breed: breed)
 
         let store = TestStore(initialState: initialState) {
-            BreedsFeature()
+            BreedsList()
         } withDependencies: {
             $0.breedsCacheClient.updateFavoriteBreed = { id, isFavorite in
                 await recorder.record(id: id, isFavorite: isFavorite)

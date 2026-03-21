@@ -5,16 +5,16 @@ import ComposableArchitecture
 struct AppFeature {
     @ObservableState
     struct State {
-        var breeds = BreedsFeature.State()
+        var breeds = BreedsList.State()
     }
-    
+
     enum Action {
-        case breeds(BreedsFeature.Action)
+        case breeds(BreedsList.Action)
     }
-    
+
     var body: some Reducer<State, Action> {
         Scope(state: \.breeds, action: \.breeds) {
-            BreedsFeature()
+            BreedsList()
         }
     }
 }

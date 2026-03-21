@@ -6,7 +6,7 @@ struct AppView: View {
     let store: StoreOf<AppFeature>
     
     var body: some View {
-        BreedsView(
+        BreedsListView(
             store: self.store.scope(state: \.breeds, action: \.breeds)
         )
     }
