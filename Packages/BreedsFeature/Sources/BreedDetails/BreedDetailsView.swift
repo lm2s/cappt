@@ -71,21 +71,19 @@ private struct BreedHeroImage: View {
                 style: .continuous
             )
             .fill(AppTheme.Colors.panelBackground)
-            
+
             CachedAsyncImage(url: URL(string: self.imageURL), imageFetcher: self.imageFetcher) { image in
                 image
                     .resizable()
                     .scaledToFit()
             } placeholder: {
                 VStack(spacing: 12) {
-                    Image(systemName: "photo")
-                        .font(.system(size: 36, weight: .medium))
-                        .foregroundStyle(AppTheme.Colors.secondaryText)
-
-                    Text(self.name)
-                        .font(.headline)
+                    Image(systemName: "cat.fill")
+                        .font(.system(size: 60, weight: .medium))
                         .foregroundStyle(AppTheme.Colors.secondaryText)
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .aspectRatio(1, contentMode: .fit)
             }
         }
         .clipShape(

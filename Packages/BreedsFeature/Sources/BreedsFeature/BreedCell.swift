@@ -11,7 +11,7 @@ struct BreedCell: View {
     let breedButtonTapped: () -> Void
     let favoriteButtonTapped: () -> Void
 
-    var body: some View { // TODO: text over image with blur/glass effect
+    var body: some View {
         ZStack(alignment: .topTrailing) {
             Button(action: self.breedButtonTapped) {
                 VStack(spacing: 10) {
@@ -20,8 +20,8 @@ struct BreedCell: View {
                             .resizable()
                             .scaledToFill()
                     } placeholder: {
-                        Image(systemName: "photo")
-                            .font(.system(size: 24, weight: .medium))
+                        Image(systemName: "cat.fill")
+                            .font(.system(size: 40, weight: .medium))
                             .foregroundStyle(AppTheme.Colors.secondaryText)
                             
                     }
