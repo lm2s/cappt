@@ -1,5 +1,6 @@
 import BreedDetails
 import ComposableArchitecture
+import IssueReporting
 import PersistenceKit
 
 @Reducer
@@ -149,17 +150,17 @@ private extension BreedsList {
         return .run { send in
             do {
                 let breeds = try await fetchBreeds(pageSize, page)
-                let cachedBreeds = (try? await fetchCachedBreeds()) ?? []
+                let cachedBreeds = await withErrorReporting { try await fetchCachedBreeds() } ?? []
                 let favoriteBreedIDs = Self.favoriteBreedIDs(from: cachedBreeds)
                 let mergedBreeds = Self.mergingFavorites(
                     in: breeds,
                     favoriteBreedIDs: favoriteBreedIDs
                 )
-                try? await saveBreeds(mergedBreeds)
+                await withErrorReporting { try await saveBreeds(mergedBreeds) }
                 await send(.breedsResponse(.success(mergedBreeds)))
             } catch {
                 if page == 0 {
-                    let cachedBreeds = (try? await fetchCachedBreeds()) ?? []
+                    let cachedBreeds = await withErrorReporting { try await fetchCachedBreeds() } ?? []
                     if !cachedBreeds.isEmpty {
                         await send(.breedsResponse(.success(cachedBreeds)))
                     } else {
@@ -179,7 +180,7 @@ private extension BreedsList {
 
         let updateFavoriteBreed = self.breedsCacheClient.updateFavoriteBreed
         return .run { _ in
-            try? await updateFavoriteBreed(id, isFavorite)
+            await withErrorReporting { try await updateFavoriteBreed(id, isFavorite) }
         }
     }
 
