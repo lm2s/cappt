@@ -15,6 +15,7 @@
 		B1A2C3D4E5F60718293A4B5C /* PersistenceKit in Frameworks */ = {isa = PBXBuildFile; productRef = C2B3D4E5F6071829A3B4C5D6 /* PersistenceKit */; };
 		ECAF79F5C9B50ADF339B47E9 /* BreedsFeature in Frameworks */ = {isa = PBXBuildFile; productRef = E9D64AAF386318A0F04B793A /* BreedsFeature */; };
 		F1A2B3C4D5E6F708192A3B4C /* BreedsListUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2B3C4D5E6F708192A3B4C5D /* BreedsListUITests.swift */; };
+		A1B2C3D4E5F6A7B8C9D0E1F2 /* BreedDetailsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2C3D4E5F6A7B8C9D0E1F2A3 /* BreedDetailsUITests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +36,7 @@
 		8EC570DAC93B1EFFC5813E50 /* BreedsFeature */ = {isa = PBXFileReference; lastKnownFileType = folder; name = BreedsFeature; path = Packages/BreedsFeature; sourceTree = SOURCE_ROOT; };
 		E948A2AE663DD845DD1EB3AE /* CapptApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapptApp.swift; sourceTree = "<group>"; };
 		E95D1EFE56394F05952D1344 /* AppFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeature.swift; sourceTree = "<group>"; };
+		B2C3D4E5F6A7B8C9D0E1F2A3 /* BreedDetailsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedDetailsUITests.swift; sourceTree = "<group>"; };
 		F2B3C4D5E6F708192A3B4C5D /* BreedsListUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedsListUITests.swift; sourceTree = "<group>"; };
 		F3C4D5E6A7B8C9D0E1F2A3B4 /* CapptUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CapptUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB5C166189212482BE9F577D /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 		F5E6A7B8C9D0E1F2A3B4C5D6 /* CapptUITests */ = {
 			isa = PBXGroup;
 			children = (
+				B2C3D4E5F6A7B8C9D0E1F2A3 /* BreedDetailsUITests.swift */,
 				F2B3C4D5E6F708192A3B4C5D /* BreedsListUITests.swift */,
 			);
 			path = CapptUITests;
@@ -227,6 +230,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1B2C3D4E5F6A7B8C9D0E1F2 /* BreedDetailsUITests.swift in Sources */,
 				F1A2B3C4D5E6F708192A3B4C /* BreedsListUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
