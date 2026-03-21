@@ -46,7 +46,7 @@ public struct BreedsRepository: Sendable {
                 object.breedID = breed.id
                 object.breedDescription = breed.description
                 object.imageURL = breed.imageURL
-                object.isFavorite = existing?.isFavorite ?? breed.isFavorite
+                object.isFavorite = breed.isFavorite
                 object.lifeSpanLowerBound = Int16(breed.lifeSpanLowerBound ?? 0)
                 object.lifeSpanUpperBound = Int16(breed.lifeSpanUpperBound ?? 0)
                 object.name = breed.name
