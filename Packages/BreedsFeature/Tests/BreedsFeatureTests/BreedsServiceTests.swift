@@ -27,6 +27,7 @@ struct BreedsServiceTests {
                         "name": "Abyssinian",
                         "description": "Curious and social",
                         "origin": "Egypt",
+                        "life_span": "14 - 15",
                         "temperament": "Active, Gentle",
                         "reference_image_id": "0XYvRd7oD"
                       }
@@ -56,6 +57,8 @@ struct BreedsServiceTests {
                     id: "abys",
                     imageURL: "https://cdn2.thecatapi.com/images/0XYvRd7oD.jpg",
                     isFavorite: false,
+                    lifeSpanLowerBound: 14,
+                    lifeSpanUpperBound: 15,
                     name: "Abyssinian",
                     origin: "Egypt",
                     temperament: "Active, Gentle"

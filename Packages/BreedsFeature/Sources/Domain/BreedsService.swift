@@ -51,6 +51,7 @@ public extension DependencyValues {
 private struct BreedResponse: Decodable, Sendable {
     let description: String?
     let id: String
+    let lifeSpan: String?
     let name: String
     let origin: String?
     let referenceImageID: String?
@@ -59,6 +60,7 @@ private struct BreedResponse: Decodable, Sendable {
     enum CodingKeys: String, CodingKey {
         case description
         case id
+        case lifeSpan = "life_span"
         case name
         case origin
         case referenceImageID = "reference_image_id"
@@ -66,11 +68,14 @@ private struct BreedResponse: Decodable, Sendable {
     }
 
     var breed: Breed {
-        Breed(
+        let parsedLifeSpan = Breed.parseLifeSpan(self.lifeSpan ?? "")
+        return Breed(
             description: self.description ?? "",
             id: self.id,
             imageURL: self.referenceImageID.map(Self.imageURL(for:)) ?? "",
             isFavorite: false,
+            lifeSpanLowerBound: parsedLifeSpan.lower,
+            lifeSpanUpperBound: parsedLifeSpan.upper,
             name: self.name,
             origin: self.origin ?? "",
             temperament: self.temperament ?? ""

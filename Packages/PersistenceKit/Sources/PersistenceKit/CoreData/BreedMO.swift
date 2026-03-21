@@ -7,6 +7,8 @@ final class BreedMO: NSManagedObject {
     @NSManaged var breedID: String
     @NSManaged var imageURL: String
     @NSManaged var isFavorite: Bool
+    @NSManaged var lifeSpanLowerBound: Int16
+    @NSManaged var lifeSpanUpperBound: Int16
     @NSManaged var name: String
     @NSManaged var origin: String
     @NSManaged var temperament: String

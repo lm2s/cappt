@@ -5,6 +5,8 @@
         <attribute name="breedID" attributeType="String"/>
         <attribute name="imageURL" attributeType="String" defaultValueString=""/>
         <attribute name="isFavorite" attributeType="Boolean" defaultValueString="NO" usesScalarType="YES"/>
+        <attribute name="lifeSpanLowerBound" attributeType="Integer 16" defaultValueString="0" usesScalarType="YES"/>
+        <attribute name="lifeSpanUpperBound" attributeType="Integer 16" defaultValueString="0" usesScalarType="YES"/>
         <attribute name="name" attributeType="String" defaultValueString=""/>
         <attribute name="origin" attributeType="String" defaultValueString=""/>
         <attribute name="temperament" attributeType="String" defaultValueString=""/>

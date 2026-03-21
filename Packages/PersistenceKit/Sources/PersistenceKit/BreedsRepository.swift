@@ -21,6 +21,8 @@ public struct BreedsRepository: Sendable {
                     id: object.breedID,
                     imageURL: object.imageURL,
                     isFavorite: object.isFavorite,
+                    lifeSpanLowerBound: object.lifeSpanLowerBound == 0 ? nil : Int(object.lifeSpanLowerBound),
+                    lifeSpanUpperBound: object.lifeSpanUpperBound == 0 ? nil : Int(object.lifeSpanUpperBound),
                     name: object.name,
                     origin: object.origin,
                     temperament: object.temperament
@@ -45,6 +47,8 @@ public struct BreedsRepository: Sendable {
                 object.breedDescription = breed.description
                 object.imageURL = breed.imageURL
                 object.isFavorite = existing?.isFavorite ?? breed.isFavorite
+                object.lifeSpanLowerBound = Int16(breed.lifeSpanLowerBound ?? 0)
+                object.lifeSpanUpperBound = Int16(breed.lifeSpanUpperBound ?? 0)
                 object.name = breed.name
                 object.origin = breed.origin
                 object.temperament = breed.temperament

@@ -192,6 +192,8 @@ struct BreedsFeatureTests {
             id: "abys",
             imageURL: "https://cdn2.thecatapi.com/images/0XYvRd7oD.jpg",
             isFavorite: isFavorite,
+            lifeSpanLowerBound: 14,
+            lifeSpanUpperBound: 15,
             name: "Abyssinian",
             origin: "Egypt",
             temperament: "Active"
