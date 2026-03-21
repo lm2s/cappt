@@ -58,7 +58,7 @@ struct BreedCell: View {
                     .background(.regularMaterial, in: Circle())
             }
             .buttonStyle(.plain)
-            .accessibilityLabel(self.breed.isFavorite ? "Remove from favorites" : "Add to favorites") // TODO: localize
+            .accessibilityLabel(Text(self.breed.isFavorite ? "accessibility.favorites.remove" : "accessibility.favorites.add", bundle: .module))
             .padding(8)
         }
         .matchedTransitionSource(id: self.breed.id, in: self.namespace)

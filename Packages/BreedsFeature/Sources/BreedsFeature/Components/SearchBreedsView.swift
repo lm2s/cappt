@@ -20,7 +20,7 @@ struct SearchBreedsView: View {
             }
         }
         .background(AppTheme.Colors.background.ignoresSafeArea())
-        .navigationTitle("Search")
+        .navigationTitle(Text("nav.search", bundle: .module))
         .navigationBarTitleDisplayMode(.large)
     }
 }

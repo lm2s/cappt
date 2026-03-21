@@ -17,13 +17,13 @@ public struct BreedsView: View {
             get: { self.store.selectedTab },
             set: { self.store.send(.tabSelected($0)) }
         )) {
-            Tab("Breeds", systemImage: "square.grid.2x2", value: BreedsFeature.Tab.allBreeds) {
+            Tab(String(localized: "tab.breeds", bundle: .module), systemImage: "square.grid.2x2", value: BreedsFeature.Tab.allBreeds) {
                 NavigationStack {
                     AllBreedsView(store: self.store, namespace: self.namespace)
                 }
             }
 
-            Tab("Favorites", systemImage: "star", value: BreedsFeature.Tab.favorites) {
+            Tab(String(localized: "tab.favorites", bundle: .module), systemImage: "star", value: BreedsFeature.Tab.favorites) {
                 NavigationStack {
                     FavoriteBreedsView(store: self.store, namespace: self.namespace)
                 }

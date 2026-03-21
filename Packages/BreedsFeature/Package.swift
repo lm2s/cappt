@@ -4,6 +4,7 @@ import PackageDescription
 
 let package = Package(
     name: "BreedsFeature",
+    defaultLocalization: "en",
     platforms: [
         .iOS(.v18)
     ],
@@ -41,7 +42,8 @@ let package = Package(
                     package: "swift-composable-architecture"
                 ),
             ],
-            path: "Sources/BreedDetails"
+            path: "Sources/BreedDetails",
+            resources: [.process("Resources")]
         ),
         .target(
             name: "BreedsFeature",
@@ -63,7 +65,8 @@ let package = Package(
                 "BreedsFeature",
                 "Domain/BreedsEndpoint.swift",
                 "Domain/BreedsService.swift",
-            ]
+            ],
+            resources: [.process("Resources")]
         ),
         .testTarget(
             name: "BreedsFeatureTests",

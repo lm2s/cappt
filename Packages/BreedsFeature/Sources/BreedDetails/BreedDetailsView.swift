@@ -30,7 +30,7 @@ public struct BreedDetailsView: View {
                             .background(AppTheme.Colors.panelBackground, in: Circle())
                     }
                     .buttonStyle(.plain)
-                    .accessibilityLabel(self.store.breed.isFavorite ? "Remove from favorites" : "Add to favorites")
+                    .accessibilityLabel(Text(self.store.breed.isFavorite ? "accessibility.favorites.remove" : "accessibility.favorites.add", bundle: .module))
                 }
                 
                 BreedHeroImage(
@@ -39,8 +39,8 @@ public struct BreedDetailsView: View {
                 )
 
                 Card { Text(self.store.breed.description) }
-                BreedFactsCard(title: "Origin", value: self.store.breed.origin)
-                BreedFactsCard(title: "Temperament", value: self.store.breed.temperament)
+                BreedFactsCard(title: String(localized: "details.origin", bundle: .module), value: self.store.breed.origin)
+                BreedFactsCard(title: String(localized: "details.temperament", bundle: .module), value: self.store.breed.temperament)
             }
             .padding(.horizontal, AppTheme.Layout.screenPadding)
             .padding(.vertical, 20)

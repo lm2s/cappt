@@ -27,17 +27,25 @@ struct AllBreedsView: View {
         Group {
             if self.store.hasError {
                 ContentUnavailableView {
-                    Label("Unable to Load Breeds", systemImage: "wifi.exclamationmark")
+                    Label {
+                        Text("error.title", bundle: .module)
+                    } icon: {
+                        Image(systemName: "wifi.exclamationmark")
+                    }
                 } description: {
-                    Text("Check your connection and try again.")
+                    Text("error.message", bundle: .module)
                 } actions: {
-                    Button("Retry") {
+                    Button {
                         self.store.send(.retryButtonTapped)
+                    } label: {
+                        Text("error.retry", bundle: .module)
                     }
                     .buttonStyle(.bordered)
                 }
             } else if self.store.isLoading && self.store.breeds.isEmpty {
-                ProgressView("Loading breeds…")
+                ProgressView {
+                    Text("loading.message", bundle: .module)
+                }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
                 BreedGridView(
@@ -49,7 +57,7 @@ struct AllBreedsView: View {
             }
         }
         .background(AppTheme.Colors.background.ignoresSafeArea())
-        .navigationTitle("Breeds")
+        .navigationTitle(Text("nav.breeds", bundle: .module))
         .navigationBarTitleDisplayMode(.large)
     }
 }

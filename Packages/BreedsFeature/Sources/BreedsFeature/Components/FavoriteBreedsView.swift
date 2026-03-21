@@ -12,14 +12,18 @@ struct FavoriteBreedsView: View {
         Group {
             if favorites.isEmpty {
                 ContentUnavailableView {
-                    Label("No Favorites Yet", systemImage: "star")
+                    Label {
+                        Text("favorites.empty.title", bundle: .module)
+                    } icon: {
+                        Image(systemName: "star")
+                    }
                 } description: {
-                    Text("Tap the star on any breed to save it here.")
+                    Text("favorites.empty.message", bundle: .module)
                 }
             } else {
                 VStack(spacing: 0) {
                     if let average = self.averageLifeSpan(of: favorites) {
-                        Text("Average Lifespan: \(average, specifier: "%.0f") years")
+                        Text(String(localized: "favorites.averageLifespan \(String(format: "%.0f", average))", bundle: .module))
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -36,7 +40,7 @@ struct FavoriteBreedsView: View {
             }
         }
         .background(AppTheme.Colors.background.ignoresSafeArea())
-        .navigationTitle("Favorites")
+        .navigationTitle(Text("nav.favorites", bundle: .module))
         .navigationBarTitleDisplayMode(.large)
     }
 
