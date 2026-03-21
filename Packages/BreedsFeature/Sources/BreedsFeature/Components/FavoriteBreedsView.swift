@@ -2,10 +2,12 @@ import ComposableArchitecture
 import AppUI
 import PersistenceKit
 import SwiftUI
+import UIKit
 
 struct FavoriteBreedsView: View {
     let store: StoreOf<BreedsList>
     var namespace: Namespace.ID
+    let imageFetcher: @Sendable (URL) async throws -> UIImage
 
     var body: some View {
         let favorites = self.store.breeds.filter(\.isFavorite)
@@ -35,6 +37,7 @@ struct FavoriteBreedsView: View {
                     BreedGridView(
                         breeds: favorites,
                         namespace: self.namespace,
+                        imageFetcher: self.imageFetcher,
                         breedButtonTapped: { self.store.send(.breedButtonTapped(id: $0)) },
                         favoriteButtonTapped: { self.store.send(.favoriteButtonTapped(id: $0)) }
                     )

@@ -36,6 +36,7 @@ let package = Package(
             name: "BreedDetails",
             dependencies: [
                 "AppUI",
+                "NetworkKit",
                 "PersistenceKit",
                 .product(
                     name: "ComposableArchitecture",

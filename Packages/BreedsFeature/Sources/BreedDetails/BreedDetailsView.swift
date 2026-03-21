@@ -1,10 +1,13 @@
 import ComposableArchitecture
 import AppUI
+import NetworkKit
 import PersistenceKit
 import SwiftUI
+import UIKit
 
 public struct BreedDetailsView: View {
     let store: StoreOf<BreedDetails>
+    @Dependency(\.imageCacheClient) private var imageCacheClient
     
     public init(store: StoreOf<BreedDetails>) {
         self.store = store
@@ -37,7 +40,8 @@ public struct BreedDetailsView: View {
                 
                 BreedHeroImage(
                     imageURL: self.store.breed.imageURL,
-                    name: self.store.breed.name
+                    name: self.store.breed.name,
+                    imageFetcher: self.imageCacheClient.image
                 )
 
                 Card { Text(self.store.breed.description) }
@@ -58,7 +62,8 @@ public struct BreedDetailsView: View {
 private struct BreedHeroImage: View {
     let imageURL: String
     let name: String
-    
+    let imageFetcher: @Sendable (URL) async throws -> UIImage
+
     var body: some View {
         ZStack {
             RoundedRectangle(
@@ -67,7 +72,7 @@ private struct BreedHeroImage: View {
             )
             .fill(AppTheme.Colors.panelBackground)
             
-            CachedAsyncImage(url: URL(string: self.imageURL)) { image in
+            CachedAsyncImage(url: URL(string: self.imageURL), imageFetcher: self.imageFetcher) { image in
                 image
                     .resizable()
                     .scaledToFit()

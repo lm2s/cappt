@@ -3,10 +3,12 @@ import ComposableArchitecture
 import Foundation
 import PersistenceKit
 import SwiftUI
+import UIKit
 
 struct AllBreedsView: View {
     let store: StoreOf<BreedsList>
     var namespace: Namespace.ID
+    let imageFetcher: @Sendable (URL) async throws -> UIImage
 
     var body: some View {
         if #available(iOS 26, *) {
@@ -53,6 +55,7 @@ struct AllBreedsView: View {
                 BreedGridView(
                     breeds: self.store.filteredBreeds,
                     namespace: self.namespace,
+                    imageFetcher: self.imageFetcher,
                     breedButtonTapped: { self.store.send(.breedButtonTapped(id: $0)) },
                     favoriteButtonTapped: { self.store.send(.favoriteButtonTapped(id: $0)) },
                     isLoadingMore: self.store.isLoadingMore,

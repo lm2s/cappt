@@ -13,23 +13,9 @@ let package = Package(
             targets: ["AppUI"]
         )
     ],
-    dependencies: [
-        .package(path: "../NetworkKit"),
-        .package(
-            url: "https://github.com/pointfreeco/swift-dependencies",
-            from: "1.0.0"
-        ),
-    ],
     targets: [
         .target(
-            name: "AppUI",
-            dependencies: [
-                "NetworkKit",
-                .product(
-                    name: "Dependencies",
-                    package: "swift-dependencies"
-                ),
-            ]
+            name: "AppUI"
         )
     ]
 )

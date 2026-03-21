@@ -2,10 +2,12 @@ import AppUI
 import Foundation
 import PersistenceKit
 import SwiftUI
+import UIKit
 
 struct BreedCell: View {
     let breed: Breed
     var namespace: Namespace.ID
+    let imageFetcher: @Sendable (URL) async throws -> UIImage
     let breedButtonTapped: () -> Void
     let favoriteButtonTapped: () -> Void
 
@@ -13,7 +15,7 @@ struct BreedCell: View {
         ZStack(alignment: .topTrailing) {
             Button(action: self.breedButtonTapped) {
                 VStack(spacing: 10) {
-                    CachedAsyncImage(url: URL(string: self.breed.imageURL)) { image in
+                    CachedAsyncImage(url: URL(string: self.breed.imageURL), imageFetcher: self.imageFetcher) { image in
                         image
                             .resizable()
                             .scaledToFill()

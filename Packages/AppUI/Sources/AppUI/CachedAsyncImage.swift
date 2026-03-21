@@ -1,21 +1,22 @@
-import Dependencies
-import NetworkKit
 import SwiftUI
+import UIKit
 
 public struct CachedAsyncImage<Content: View, Placeholder: View>: View {
     let url: URL?
+    let imageFetcher: @Sendable (URL) async throws -> UIImage
     @ViewBuilder let content: (Image) -> Content
     @ViewBuilder let placeholder: () -> Placeholder
 
-    @Dependency(\.imageCacheClient) private var imageCacheClient
     @State private var uiImage: UIImage?
 
     public init(
         url: URL?,
+        imageFetcher: @escaping @Sendable (URL) async throws -> UIImage,
         @ViewBuilder content: @escaping (Image) -> Content,
         @ViewBuilder placeholder: @escaping () -> Placeholder
     ) {
         self.url = url
+        self.imageFetcher = imageFetcher
         self.content = content
         self.placeholder = placeholder
     }
@@ -30,7 +31,7 @@ public struct CachedAsyncImage<Content: View, Placeholder: View>: View {
         }
         .task(id: self.url) {
             guard let url else { return }
-            self.uiImage = try? await self.imageCacheClient.image(url)
+            self.uiImage = try? await self.imageFetcher(url)
         }
     }
 }

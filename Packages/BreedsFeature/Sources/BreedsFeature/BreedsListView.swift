@@ -1,11 +1,13 @@
 import BreedDetails
 import ComposableArchitecture
 import AppUI
+import NetworkKit
 import PersistenceKit
 import SwiftUI
 
 public struct BreedsListView: View {
     @Bindable var store: StoreOf<BreedsList>
+    @Dependency(\.imageCacheClient) private var imageCacheClient
     @Namespace private var namespace
 
     public init(store: StoreOf<BreedsList>) {
@@ -19,20 +21,20 @@ public struct BreedsListView: View {
         )) {
             Tab(String(localized: "tab.breeds", bundle: .module), systemImage: "square.grid.2x2", value: BreedsList.Tab.allBreeds) {
                 NavigationStack {
-                    AllBreedsView(store: self.store, namespace: self.namespace)
+                    AllBreedsView(store: self.store, namespace: self.namespace, imageFetcher: self.imageCacheClient.image)
                 }
             }
 
             Tab(String(localized: "tab.favorites", bundle: .module), systemImage: "star", value: BreedsList.Tab.favorites) {
                 NavigationStack {
-                    FavoriteBreedsView(store: self.store, namespace: self.namespace)
+                    FavoriteBreedsView(store: self.store, namespace: self.namespace, imageFetcher: self.imageCacheClient.image)
                 }
             }
 
             if #available(iOS 26.0, *) {
                 Tab(value: BreedsList.Tab.search, role: .search) {
                     NavigationStack {
-                        SearchBreedsView(store: self.store, namespace: self.namespace)
+                        SearchBreedsView(store: self.store, namespace: self.namespace, imageFetcher: self.imageCacheClient.image)
                     }
                     .searchable(
                         text: Binding(
