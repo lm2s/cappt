@@ -7,7 +7,11 @@ import SwiftUI
 struct CapptApp: App {
     var body: some Scene {
         WindowGroup {
-            if ProcessInfo.processInfo.environment["UITesting"] == "true" {
+            if ProcessInfo.processInfo.environment["SimulateStoreError"] == "true" {
+                StoreLoadErrorView(errorDescription: "Simulated store load failure for testing.")
+            } else if let error = PersistenceController.shared.loadError {
+                StoreLoadErrorView(errorDescription: error.localizedDescription)
+            } else if ProcessInfo.processInfo.environment["UITesting"] == "true" {
                 AppView(
                     store: Store(initialState: AppFeature.State()) {
                         AppFeature()

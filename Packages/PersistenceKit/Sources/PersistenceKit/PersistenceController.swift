@@ -6,6 +6,7 @@ public final class PersistenceController: @unchecked Sendable {
     public static let shared = PersistenceController()
 
     public let container: NSPersistentContainer
+    public private(set) var loadError: Error?
 
     public init(inMemory: Bool = false) {
         let container = NSPersistentContainer(
@@ -19,13 +20,16 @@ public final class PersistenceController: @unchecked Sendable {
         }
 
         container.persistentStoreDescriptions = [description]
+        var loadError: Error?
         container.loadPersistentStores { _, error in
-            if let error {
-                fatalError("Failed to load Core Data store: \(error.localizedDescription)")
-            }
+            loadError = error
         }
-        container.viewContext.automaticallyMergesChangesFromParent = true
-        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        self.loadError = loadError
+
+        if loadError == nil {
+            container.viewContext.automaticallyMergesChangesFromParent = true
+            container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        }
         self.container = container
     }
 
