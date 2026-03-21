@@ -1,3 +1,4 @@
+import CryptoKit
 import Dependencies
 import Foundation
 import UIKit
@@ -74,7 +75,8 @@ private actor ImageCache {
     }
 
     private func diskURL(for url: URL) -> URL {
-        let filename = url.absoluteString.data(using: .utf8)!.base64EncodedString()
+        let hash = SHA256.hash(data: Data(url.absoluteString.utf8))
+        let filename = hash.compactMap { String(format: "%02x", $0) }.joined()
         return self.cacheDirectory.appendingPathComponent(filename)
     }
 }
