@@ -2,14 +2,17 @@
 
 public struct BreedsRepository: Sendable {
     private let controller: PersistenceController
+    private let backgroundContext: NSManagedObjectContext
 
     public init(controller: PersistenceController) {
         self.controller = controller
+        let context = controller.container.newBackgroundContext()
+        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        self.backgroundContext = context
     }
 
     public func fetchBreeds() async throws -> [Breed] {
-        let context = controller.container.newBackgroundContext()
-        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        let context = controller.viewContext
 
         return try await context.perform {
             let request = BreedMO.fetchRequest()
@@ -32,8 +35,7 @@ public struct BreedsRepository: Sendable {
     }
 
     public func saveBreeds(_ breeds: [Breed]) async throws {
-        let context = controller.container.newBackgroundContext()
-        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        let context = backgroundContext
 
         try await context.perform {
             for breed in breeds {
@@ -61,8 +63,7 @@ public struct BreedsRepository: Sendable {
     }
 
     public func setFavoriteBreed(id: String, isFavorite: Bool) async throws {
-        let context = controller.container.newBackgroundContext()
-        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        let context = controller.viewContext
 
         try await context.perform {
             let request = BreedMO.fetchRequest()
