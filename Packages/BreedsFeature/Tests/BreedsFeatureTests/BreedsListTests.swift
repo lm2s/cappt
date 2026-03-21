@@ -29,12 +29,14 @@ struct BreedsListTests {
 
         await store.send(.onAppear) {
             $0.isLoading = true
+            $0.pendingPage = 0
         }
-        await store.receive(\.breedsResponse.success) {
+        await store.receive(\.breedsResponse) {
             $0.breeds = [Self.abyssinian(isFavorite: true)]
             $0.hasLoadedBreeds = true
             $0.isLoading = false
             $0.hasMorePages = false
+            $0.pendingPage = nil
         }
     }
 
@@ -58,12 +60,14 @@ struct BreedsListTests {
 
         await store.send(.onAppear) {
             $0.isLoading = true
+            $0.pendingPage = 0
         }
-        await store.receive(\.breedsResponse.success) {
+        await store.receive(\.breedsResponse) {
             $0.breeds = [Self.abyssinian(isFavorite: true)]
             $0.hasLoadedBreeds = true
             $0.isLoading = false
             $0.hasMorePages = false
+            $0.pendingPage = nil
         }
     }
 
@@ -82,10 +86,12 @@ struct BreedsListTests {
 
         await store.send(.onAppear) {
             $0.isLoading = true
+            $0.pendingPage = 0
         }
-        await store.receive(\.breedsResponse.failure) {
+        await store.receive(\.breedsResponse) {
             $0.isLoading = false
             $0.hasError = true
+            $0.pendingPage = nil
         }
     }
 
@@ -109,10 +115,12 @@ struct BreedsListTests {
 
         await store.send(.onAppear) {
             $0.isLoading = true
+            $0.pendingPage = 0
         }
-        await store.receive(\.breedsResponse.failure) {
+        await store.receive(\.breedsResponse) {
             $0.isLoading = false
             $0.hasError = true
+            $0.pendingPage = nil
         }
 
         shouldFail = false
@@ -126,12 +134,14 @@ struct BreedsListTests {
         }
         await store.receive(\.onAppear) {
             $0.isLoading = true
+            $0.pendingPage = 0
         }
-        await store.receive(\.breedsResponse.success) {
+        await store.receive(\.breedsResponse) {
             $0.breeds = [Self.abyssinian(isFavorite: false)]
             $0.hasLoadedBreeds = true
             $0.isLoading = false
             $0.hasMorePages = false
+            $0.pendingPage = nil
         }
     }
 
@@ -212,13 +222,66 @@ struct BreedsListTests {
 
         await store.send(.loadMoreBreeds) {
             $0.isLoadingMore = true
+            $0.pendingPage = 1
         }
-        await store.receive(\.breedsResponse.success) {
+        await store.receive(\.breedsResponse) {
             $0.breeds = [Self.abyssinian(isFavorite: false), Self.bengal(isFavorite: false)]
             $0.isLoadingMore = false
             $0.hasMorePages = false
             $0.currentPage = 1
+            $0.pendingPage = nil
         }
+    }
+
+    @Test
+    func loadMoreBreedsDeduplicatesOverlappingPageData() async {
+        var initialState = BreedsList.State()
+        initialState.hasLoadedBreeds = true
+        initialState.breeds = [Self.abyssinian(isFavorite: false)]
+        initialState.currentPage = 0
+        initialState.hasMorePages = true
+
+        let store = TestStore(initialState: initialState) {
+            BreedsList()
+        } withDependencies: {
+            $0.breedsService.fetchBreeds = { _, _ in
+                [
+                    Self.abyssinian(isFavorite: false),
+                    Self.bengal(isFavorite: false),
+                ]
+            }
+            $0.breedsCacheClient.fetchBreeds = { [Self.abyssinian(isFavorite: true)] }
+            $0.breedsCacheClient.saveBreeds = { _ in }
+        }
+
+        await store.send(.loadMoreBreeds) {
+            $0.isLoadingMore = true
+            $0.pendingPage = 1
+        }
+        await store.receive(\.breedsResponse) {
+            $0.breeds = [Self.abyssinian(isFavorite: true), Self.bengal(isFavorite: false)]
+            $0.isLoadingMore = false
+            $0.hasMorePages = false
+            $0.currentPage = 1
+            $0.pendingPage = nil
+        }
+    }
+
+    @Test
+    func staleBreedsResponseIsIgnored() async {
+        var initialState = BreedsList.State()
+        initialState.hasLoadedBreeds = true
+        initialState.breeds = [Self.abyssinian(isFavorite: false)]
+        initialState.currentPage = 0
+        initialState.hasMorePages = true
+        initialState.isLoadingMore = true
+        initialState.pendingPage = 1
+
+        let store = TestStore(initialState: initialState) {
+            BreedsList()
+        }
+
+        await store.send(.breedsResponse(page: 0, .success([Self.bengal(isFavorite: false)])))
     }
 
     @Test

@@ -8,7 +8,7 @@ public struct BreedsList {
     @Dependency(\.breedsService) var breedsService
     @Dependency(\.breedsCacheClient) var breedsCacheClient
 
-    static let pageSize = 15
+    static let pageSize = 30
 
     public enum Tab: Equatable {
         case allBreeds
@@ -25,6 +25,7 @@ public struct BreedsList {
         var hasError = false
         var hasMorePages = true
         var currentPage = 0
+        var pendingPage: Int?
         var selectedTab: Tab = .allBreeds
         var searchText = ""
         @Presents var breedDetails: BreedDetails.State?
@@ -41,7 +42,7 @@ public struct BreedsList {
 
     public enum Action {
         case breedButtonTapped(id: String)
-        case breedsResponse(Result<[Breed], Error>)
+        case breedsResponse(page: Int, Result<[Breed], Error>)
         case breedDetails(PresentationAction<BreedDetails.Action>)
         case loadMoreBreeds
         case onAppear
@@ -63,18 +64,27 @@ public struct BreedsList {
                 state.breedDetails = BreedDetails.State(breed: breed)
                 return .none
 
-            case let .breedsResponse(.success(breeds)):
-                if state.isLoadingMore {
-                    state.breeds.append(contentsOf: breeds)
-                    state.currentPage += 1
+            case let .breedsResponse(page, .success(breeds)):
+                guard page == state.pendingPage else {
+                    return .none
+                }
+
+                if page == 0 {
+                    state.breeds = Self.uniquedBreeds(from: breeds)
+                    state.currentPage = 0
                 } else {
-                    state.breeds = breeds
+                    state.breeds = Self.mergingPage(
+                        page: breeds,
+                        into: state.breeds
+                    )
+                    state.currentPage = page
                 }
                 state.hasLoadedBreeds = true
                 state.isLoading = false
                 state.isLoadingMore = false
                 state.hasError = false
                 state.hasMorePages = breeds.count >= BreedsList.pageSize
+                state.pendingPage = nil
 
                 if let selectedID = state.breedDetails?.breed.id,
                    let updatedBreed = state.breeds.first(where: { $0.id == selectedID }) {
@@ -83,10 +93,15 @@ public struct BreedsList {
 
                 return .none
 
-            case .breedsResponse(.failure):
+            case let .breedsResponse(page, .failure):
+                guard page == state.pendingPage else {
+                    return .none
+                }
+
                 state.isLoading = false
                 state.isLoadingMore = false
                 state.hasError = true
+                state.pendingPage = nil
                 return .none
 
             case .breedDetails(.presented(.favoriteButtonTapped)):
@@ -105,6 +120,7 @@ public struct BreedsList {
 
                 state.isLoadingMore = true
                 let page = state.currentPage + 1
+                state.pendingPage = page
                 return self.fetchBreedsPage(page: page, state: &state)
 
             case .onAppear:
@@ -113,6 +129,7 @@ public struct BreedsList {
                 }
 
                 state.isLoading = true
+                state.pendingPage = 0
                 return self.fetchBreedsPage(page: 0, state: &state)
 
             case .retryButtonTapped:
@@ -121,6 +138,9 @@ public struct BreedsList {
                 state.currentPage = 0
                 state.hasMorePages = true
                 state.breeds = []
+                state.isLoading = false
+                state.isLoadingMore = false
+                state.pendingPage = nil
                 return .send(.onAppear)
 
             case let .favoriteButtonTapped(id):
@@ -157,17 +177,17 @@ private extension BreedsList {
                     favoriteBreedIDs: favoriteBreedIDs
                 )
                 await withErrorReporting { try await saveBreeds(mergedBreeds) }
-                await send(.breedsResponse(.success(mergedBreeds)))
+                await send(.breedsResponse(page: page, .success(mergedBreeds)))
             } catch {
                 if page == 0 {
                     let cachedBreeds = await withErrorReporting { try await fetchCachedBreeds() } ?? []
                     if !cachedBreeds.isEmpty {
-                        await send(.breedsResponse(.success(cachedBreeds)))
+                        await send(.breedsResponse(page: page, .success(cachedBreeds)))
                     } else {
-                        await send(.breedsResponse(.failure(error)))
+                        await send(.breedsResponse(page: page, .failure(error)))
                     }
                 } else {
-                    await send(.breedsResponse(.failure(error)))
+                    await send(.breedsResponse(page: page, .failure(error)))
                 }
             }
         }
@@ -197,6 +217,31 @@ private extension BreedsList {
             breed.isFavorite = favoriteBreedIDs.contains(breed.id)
             return breed
         }
+    }
+
+    static func uniquedBreeds(from breeds: [Breed]) -> [Breed] {
+        Self.mergingPage(page: breeds, into: [])
+    }
+
+    static func mergingPage(
+        page breeds: [Breed],
+        into existingBreeds: [Breed]
+    ) -> [Breed] {
+        var mergedBreeds = existingBreeds
+        var indicesByID = Dictionary(
+            uniqueKeysWithValues: mergedBreeds.enumerated().map { ($0.element.id, $0.offset) }
+        )
+
+        for breed in breeds {
+            if let index = indicesByID[breed.id] {
+                mergedBreeds[index] = breed
+            } else {
+                indicesByID[breed.id] = mergedBreeds.endIndex
+                mergedBreeds.append(breed)
+            }
+        }
+
+        return mergedBreeds
     }
 
     @discardableResult
