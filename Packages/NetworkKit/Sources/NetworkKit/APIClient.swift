@@ -1,9 +1,11 @@
 import Foundation
 
+/// A lightweight client for making requests to API endpoints.
 public struct APIClient: Sendable {
     private let configuration: APIClientConfiguration
     private let session: URLSession
     
+    /// Creates an API client with a base configuration and URL session.
     public init(
         configuration: APIClientConfiguration,
         session: URLSession = .shared
@@ -12,6 +14,7 @@ public struct APIClient: Sendable {
         self.session = session
     }
     
+    /// Fetches raw data and the URL response for an endpoint.
     public func data(for endpoint: some EndpointType) async throws -> (Data, URLResponse) {
         let request = try self.request(for: endpoint)
         let (data, response) = try await self.session.data(for: request)

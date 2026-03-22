@@ -1,3 +1,4 @@
+/// Supported HTTP methods for endpoint requests.
 public enum HTTPMethod: String, Sendable {
     case delete = "DELETE"
     case get = "GET"
