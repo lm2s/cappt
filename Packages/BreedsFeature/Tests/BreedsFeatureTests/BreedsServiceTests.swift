@@ -8,6 +8,7 @@ import Testing
 
 @testable import BreedsFeature
 
+@Suite(.serialized)
 struct BreedsServiceTests {
     @Test
     func fetchBreedsDecodesResponse() async throws {
