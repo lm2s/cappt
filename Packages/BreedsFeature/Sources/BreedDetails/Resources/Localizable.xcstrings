@@ -2,6 +2,7 @@
   "sourceLanguage" : "en",
   "strings" : {
     "accessibility.favorites.add" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11,12 +12,33 @@
         }
       }
     },
+    "accessibility.favorites.add %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add %@ to favorites"
+          }
+        }
+      }
+    },
     "accessibility.favorites.remove" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Remove from favorites"
+          }
+        }
+      }
+    },
+    "accessibility.favorites.remove %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove %@ from favorites"
           }
         }
       }

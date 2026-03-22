@@ -34,7 +34,16 @@ public struct BreedDetailsView: View {
                             .background(AppTheme.Colors.panelBackground, in: Circle())
                     }
                     .buttonStyle(.plain)
-                    .accessibilityLabel(Text(self.store.breed.isFavorite ? "accessibility.favorites.remove" : "accessibility.favorites.add", bundle: .module))
+                    .accessibilityLabel(
+                        Text(
+                            String(
+                                localized: self.store.breed.isFavorite
+                                    ? "accessibility.favorites.remove \(self.store.breed.name)"
+                                    : "accessibility.favorites.add \(self.store.breed.name)",
+                                bundle: .module
+                            )
+                        )
+                    )
                     .accessibilityIdentifier("detail-favorite-button")
                 }
                 
@@ -92,6 +101,7 @@ private struct BreedHeroImage: View {
                 style: .continuous
             )
         )
+        .accessibilityHidden(true)
     }
 }
 

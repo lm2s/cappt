@@ -40,6 +40,7 @@ struct BreedCell: View {
                         )
                         .fill(AppTheme.Colors.panelBackground)
                     )
+                    .accessibilityHidden(true)
                     
                     Text(self.breed.name)
                         .font(.body)
@@ -51,6 +52,7 @@ struct BreedCell: View {
                 .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
+            .accessibilityIdentifier("breed-button-\(self.breed.id)")
             
             Button(action: self.favoriteButtonTapped) {
                 Image(systemName: self.breed.isFavorite ? "star.fill" : "star")
@@ -60,7 +62,16 @@ struct BreedCell: View {
                     .background(.regularMaterial, in: Circle())
             }
             .buttonStyle(.plain)
-            .accessibilityLabel(Text(self.breed.isFavorite ? "accessibility.favorites.remove" : "accessibility.favorites.add", bundle: .module))
+            .accessibilityLabel(
+                Text(
+                    String(
+                        localized: self.breed.isFavorite
+                            ? "accessibility.favorites.remove \(self.breed.name)"
+                            : "accessibility.favorites.add \(self.breed.name)",
+                        bundle: .module
+                    )
+                )
+            )
             .accessibilityIdentifier("favorite-button-\(self.breed.id)")
             .padding(8)
         }

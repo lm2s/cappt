@@ -16,9 +16,10 @@ final class BreedDetailsUITests: XCTestCase {
     private func openBreedDetails(named name: String = "Abyssinian") {
         app.launch()
 
-        let breedName = app.staticTexts[name]
-        XCTAssertTrue(breedName.waitForExistence(timeout: 5))
-        breedName.tap()
+        let breedID = name.lowercased().replacingOccurrences(of: " ", with: "-")
+        let breedButton = app.buttons["breed-button-\(breedID)"]
+        XCTAssertTrue(breedButton.waitForExistence(timeout: 5))
+        breedButton.tap()
 
         let detailName = app.staticTexts.matching(identifier: "breed-detail-name").firstMatch
         XCTAssertTrue(detailName.waitForExistence(timeout: 5))
@@ -32,6 +33,7 @@ final class BreedDetailsUITests: XCTestCase {
         if !dismissButton.waitForExistence(timeout: 2) {
             app.navigationBars.buttons.firstMatch.tap()
         } else {
+            XCTAssertEqual(dismissButton.label, "Close details")
             dismissButton.tap()
         }
     }
@@ -71,13 +73,13 @@ final class BreedDetailsUITests: XCTestCase {
 
         let favoriteButton = app.buttons.matching(identifier: "detail-favorite-button").firstMatch
         XCTAssertTrue(favoriteButton.waitForExistence(timeout: 3))
-        XCTAssertEqual(favoriteButton.label, "Add to favorites")
+        XCTAssertEqual(favoriteButton.label, "Add Abyssinian to favorites")
 
         favoriteButton.tap()
-        XCTAssertEqual(favoriteButton.label, "Remove from favorites")
+        XCTAssertEqual(favoriteButton.label, "Remove Abyssinian from favorites")
 
         favoriteButton.tap()
-        XCTAssertEqual(favoriteButton.label, "Add to favorites")
+        XCTAssertEqual(favoriteButton.label, "Add Abyssinian to favorites")
     }
 
     @MainActor
@@ -87,13 +89,13 @@ final class BreedDetailsUITests: XCTestCase {
         let favoriteButton = app.buttons.matching(identifier: "detail-favorite-button").firstMatch
         XCTAssertTrue(favoriteButton.waitForExistence(timeout: 3))
         favoriteButton.tap()
-        XCTAssertEqual(favoriteButton.label, "Remove from favorites")
+        XCTAssertEqual(favoriteButton.label, "Remove Abyssinian from favorites")
 
         dismissDetails()
 
         let gridFavorite = app.buttons.matching(identifier: "favorite-button-abyssinian").firstMatch
         XCTAssertTrue(gridFavorite.waitForExistence(timeout: 5))
-        XCTAssertEqual(gridFavorite.label, "Remove from favorites")
+        XCTAssertEqual(gridFavorite.label, "Remove Abyssinian from favorites")
     }
 
     @MainActor

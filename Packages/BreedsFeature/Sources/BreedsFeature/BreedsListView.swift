@@ -55,12 +55,12 @@ public struct BreedsListView: View {
                             Button {
                                 self.store.send(.breedDetails(.dismiss))
                             } label: {
-                                Image(systemName: "xmark.circle.fill")
-                                    .font(.title2)
-                                    .symbolRenderingMode(.hierarchical)
+                                Image(systemName: "xmark")
+                                    .font(.title3)
                                     .foregroundStyle(.secondary)
                                     .accessibilityIdentifier("dismiss-detail-button")
                             }
+                            .accessibilityLabel(Text("accessibility.details.close", bundle: .module))
                         }
                     }
             }
