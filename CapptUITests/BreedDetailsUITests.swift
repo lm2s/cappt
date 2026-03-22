@@ -107,7 +107,7 @@ final class BreedDetailsUITests: XCTestCase {
 
         dismissDetails()
 
-        let bengal = app.staticTexts["Bengal"]
+        let bengal = app.buttons["breed-button-bengal"]
         XCTAssertTrue(bengal.waitForExistence(timeout: 5))
         bengal.tap()
 

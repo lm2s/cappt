@@ -111,9 +111,9 @@ final class BreedsListUITests: XCTestCase {
     func testToggleFavoriteFromDetails() {
         app.launch()
 
-        let breedName = app.staticTexts["Abyssinian"]
-        XCTAssertTrue(breedName.waitForExistence(timeout: 5))
-        breedName.tap()
+        let breedButton = app.buttons["breed-button-abyssinian"]
+        XCTAssertTrue(breedButton.waitForExistence(timeout: 5))
+        breedButton.tap()
 
         let detailFavorite = app.buttons.matching(identifier: "detail-favorite-button").firstMatch
         XCTAssertTrue(detailFavorite.waitForExistence(timeout: 5))
@@ -125,6 +125,7 @@ final class BreedsListUITests: XCTestCase {
         if !dismissButton.waitForExistence(timeout: 2) {
             app.navigationBars.buttons.firstMatch.tap()
         } else {
+            XCTAssertEqual(dismissButton.label, "Close details")
             dismissButton.tap()
         }
 
