@@ -16,7 +16,7 @@ public struct BreedsService: Sendable {
             let response = try JSONDecoder().decode([BreedResponse].self, from: data)
 
             let imageURLsByID = try await withThrowingTaskGroup(
-                of: (String, String).self,
+                of: (String, String?).self,
                 returning: [String: String].self
             ) { group in
                 for breed in response {
@@ -24,18 +24,26 @@ public struct BreedsService: Sendable {
                         continue
                     }
                     group.addTask {
-                        let (data, _) = try await apiClient.data(
-                            for: BreedsEndpoint.image(id: referenceImageID)
-                        )
-                        let imageResponse = try JSONDecoder().decode(
-                            ImageResponse.self,
-                            from: data
-                        )
-                        return (breed.id, imageResponse.url)
+                        do {
+                            let (data, _) = try await apiClient.data(
+                                for: BreedsEndpoint.image(id: referenceImageID)
+                            )
+                            let imageResponse = try JSONDecoder().decode(
+                                ImageResponse.self,
+                                from: data
+                            )
+                            return (breed.id, imageResponse.url)
+                        } catch {
+                            if error is CancellationError {
+                                throw error
+                            }
+                            return (breed.id, nil)
+                        }
                     }
                 }
                 var result: [String: String] = [:]
                 for try await (id, url) in group {
+                    guard let url else { continue }
                     result[id] = url
                 }
                 return result
