@@ -12,12 +12,12 @@ struct StoreLoadErrorView: View {
                 .foregroundStyle(.red)
                 .accessibilityIdentifier("store-error-icon")
 
-            Text("Something Went Wrong")
+            Text(String(localized: "storeLoadError.title"))
                 .font(.title)
                 .fontWeight(.bold)
                 .accessibilityIdentifier("store-error-title")
 
-            Text("The app was unable to load its data. Please contact customer service for assistance.")
+            Text(String(localized: "storeLoadError.message"))
                 .font(.body)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)

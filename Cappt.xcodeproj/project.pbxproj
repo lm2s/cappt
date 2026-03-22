@@ -8,12 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		13B70F4BF9C933A93C2B088A /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = D957597F495EDB56C99AD90E /* ComposableArchitecture */; };
+		5F7BA38F32624CE5A4CF5272 /* StoreLoadErrorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B974011C39B4A2EB4308B4C /* StoreLoadErrorUITests.swift */; };
 		5FE54B8A8AD38266D366EFAA /* AppFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95D1EFE56394F05952D1344 /* AppFeature.swift */; };
 		8777ED75C44C61A359B9E4B5 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB5C166189212482BE9F577D /* AppView.swift */; };
 		A04F3C412F6DB4C900FA34F3 /* AppUI in Frameworks */ = {isa = PBXBuildFile; productRef = A04F3C402F6DB4C900FA34F3 /* AppUI */; };
 		A04F3E7D2F6F131800FA34F3 /* StoreLoadErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04F3E7C2F6F131800FA34F3 /* StoreLoadErrorView.swift */; };
 		A1B2C3D4E5F6A7B8C9D0E1F2 /* BreedDetailsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2C3D4E5F6A7B8C9D0E1F2A3 /* BreedDetailsUITests.swift */; };
 		A80BA3F486D16D8C27C81F0A /* CapptApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E948A2AE663DD845DD1EB3AE /* CapptApp.swift */; };
+		AE4B98D5AC1E4BAF868D5853 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A15AC94685C04C29A99D57E4 /* Localizable.xcstrings */; };
 		B1A2C3D4E5F60718293A4B5C /* PersistenceKit in Frameworks */ = {isa = PBXBuildFile; productRef = C2B3D4E5F6071829A3B4C5D6 /* PersistenceKit */; };
 		ECAF79F5C9B50ADF339B47E9 /* BreedsFeature in Frameworks */ = {isa = PBXBuildFile; productRef = E9D64AAF386318A0F04B793A /* BreedsFeature */; };
 		F1A2B3C4D5E6F708192A3B4C /* BreedsListUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2B3C4D5E6F708192A3B4C5D /* BreedsListUITests.swift */; };
@@ -30,12 +32,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1B974011C39B4A2EB4308B4C /* StoreLoadErrorUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreLoadErrorUITests.swift; sourceTree = "<group>"; };
 		2448FF0929DA083BCB390782 /* PersistenceKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = PersistenceKit; path = Packages/PersistenceKit; sourceTree = SOURCE_ROOT; };
 		34530AAD027062BD8144F0E8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		52F322118970FB88D5399E69 /* Cappt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cappt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FAA588E16BEB38E18CF1A6F /* NetworkKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = NetworkKit; path = Packages/NetworkKit; sourceTree = SOURCE_ROOT; };
 		8EC570DAC93B1EFFC5813E50 /* BreedsFeature */ = {isa = PBXFileReference; lastKnownFileType = folder; name = BreedsFeature; path = Packages/BreedsFeature; sourceTree = SOURCE_ROOT; };
 		A04F3E7C2F6F131800FA34F3 /* StoreLoadErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreLoadErrorView.swift; sourceTree = "<group>"; };
+		A15AC94685C04C29A99D57E4 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		B2C3D4E5F6A7B8C9D0E1F2A3 /* BreedDetailsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedDetailsUITests.swift; sourceTree = "<group>"; };
 		E948A2AE663DD845DD1EB3AE /* CapptApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapptApp.swift; sourceTree = "<group>"; };
 		E95D1EFE56394F05952D1344 /* AppFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeature.swift; sourceTree = "<group>"; };
@@ -72,7 +76,8 @@
 				E95D1EFE56394F05952D1344 /* AppFeature.swift */,
 				FB5C166189212482BE9F577D /* AppView.swift */,
 				E948A2AE663DD845DD1EB3AE /* CapptApp.swift */,
-				A04F3E7C2F6F131800FA34F3 /* StoreLoadErrorView.swift */,
+				A04F3E822F706A2600FA34F3 /* Launch Error */,
+				A04F3E812F706A1400FA34F3 /* Resources */,
 				34530AAD027062BD8144F0E8 /* Info.plist */,
 			);
 			path = Cappt;
@@ -101,6 +106,22 @@
 				8EC570DAC93B1EFFC5813E50 /* BreedsFeature */,
 			);
 			path = BreedsFeature;
+			sourceTree = "<group>";
+		};
+		A04F3E812F706A1400FA34F3 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A15AC94685C04C29A99D57E4 /* Localizable.xcstrings */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		A04F3E822F706A2600FA34F3 /* Launch Error */ = {
+			isa = PBXGroup;
+			children = (
+				A04F3E7C2F6F131800FA34F3 /* StoreLoadErrorView.swift */,
+			);
+			path = "Launch Error";
 			sourceTree = "<group>";
 		};
 		A82E6D57E190BED825339A71 /* Packages */ = {
@@ -136,6 +157,7 @@
 			children = (
 				B2C3D4E5F6A7B8C9D0E1F2A3 /* BreedDetailsUITests.swift */,
 				F2B3C4D5E6F708192A3B4C5D /* BreedsListUITests.swift */,
+				1B974011C39B4A2EB4308B4C /* StoreLoadErrorUITests.swift */,
 			);
 			path = CapptUITests;
 			sourceTree = "<group>";
@@ -148,6 +170,7 @@
 			buildConfigurationList = 41CD18F57C82AEA42496E3A7 /* Build configuration list for PBXNativeTarget "Cappt" */;
 			buildPhases = (
 				F1062FC023F78D49405CDD2C /* Sources */,
+				8D002B251A564384B28F7ABA /* Resources */,
 				06A0153153E86304E414B303 /* Frameworks */,
 			);
 			buildRules = (
@@ -218,6 +241,17 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		8D002B251A564384B28F7ABA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE4B98D5AC1E4BAF868D5853 /* Localizable.xcstrings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		F1062FC023F78D49405CDD2C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -236,6 +270,7 @@
 			files = (
 				A1B2C3D4E5F6A7B8C9D0E1F2 /* BreedDetailsUITests.swift in Sources */,
 				F1A2B3C4D5E6F708192A3B4C /* BreedsListUITests.swift in Sources */,
+				5F7BA38F32624CE5A4CF5272 /* StoreLoadErrorUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
