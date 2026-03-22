@@ -33,6 +33,7 @@ public struct Breed: Equatable, Identifiable, Sendable {
         self.temperament = temperament
     }
 
+    /// Parses a life span string like `"12 - 15"` into numeric bounds.
     public static func parseLifeSpan(_ raw: String) -> (lower: Int?, upper: Int?) {
         guard let match = raw.firstMatch(of: #/(\d+)\s*-\s*(\d+)/#) else { return (nil, nil) }
         return (Int(match.1), Int(match.2))
@@ -40,6 +41,7 @@ public struct Breed: Equatable, Identifiable, Sendable {
 }
 
 public extension Breed {
+    /// Sample breeds for previews and tests.
     static let mock: [Self] = [
         Self(
             description: "Abyssinians are athletic, curious cats that stay busy and tend to bond closely with the people around them.",

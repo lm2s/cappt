@@ -1,9 +1,11 @@
 @preconcurrency import CoreData
 
+/// Reads and writes breeds from persistence.
 public struct BreedsRepository: Sendable {
     private let controller: PersistenceController
     private let backgroundContext: NSManagedObjectContext
 
+    /// Creates a repository backed by the given persistence controller.
     public init(controller: PersistenceController) {
         self.controller = controller
         let context = controller.container.newBackgroundContext()
@@ -11,6 +13,7 @@ public struct BreedsRepository: Sendable {
         self.backgroundContext = context
     }
 
+    /// Loads all saved breeds sorted by name.
     public func fetchBreeds() async throws -> [Breed] {
         let context = controller.viewContext
 
@@ -34,6 +37,7 @@ public struct BreedsRepository: Sendable {
         }
     }
 
+    /// Inserts or updates the provided breeds.
     public func saveBreeds(_ breeds: [Breed]) async throws {
         let context = backgroundContext
 
@@ -62,6 +66,7 @@ public struct BreedsRepository: Sendable {
         }
     }
 
+    /// Updates the favorite state for a saved breed.
     public func setFavoriteBreed(id: String, isFavorite: Bool) async throws {
         let context = controller.viewContext
 

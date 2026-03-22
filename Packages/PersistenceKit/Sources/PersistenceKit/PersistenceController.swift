@@ -1,13 +1,19 @@
 @preconcurrency import CoreData
 import Foundation
 
+/// Builds and owns the Core Data stack for the app.
 public final class PersistenceController: @unchecked Sendable {
+    /// An in-memory controller for previews.
     public static let preview = PersistenceController(inMemory: true)
+    /// The shared on-disk controller.
     public static let shared = PersistenceController()
 
+    /// The persistent container backing the data store.
     public let container: NSPersistentContainer
+    /// Any error produced while loading the persistent stores.
     public private(set) var loadError: Error?
 
+    /// Creates a persistence controller.
     public init(inMemory: Bool = false) {
         let container = NSPersistentContainer(
             name: "CapptModel",
@@ -33,6 +39,7 @@ public final class PersistenceController: @unchecked Sendable {
         self.container = container
     }
 
+    /// The main managed object context.
     public var viewContext: NSManagedObjectContext {
         self.container.viewContext
     }

@@ -1,22 +1,7 @@
 import Dependencies
 
-public struct BreedsCacheClient: Sendable {
-    public var fetchBreeds: @Sendable () async throws -> [Breed]
-    public var saveBreeds: @Sendable (_ breeds: [Breed]) async throws -> Void
-    public var updateFavoriteBreed: @Sendable (_ breedID: String, _ isFavorite: Bool) async throws -> Void
-
-    public init(
-        fetchBreeds: @escaping @Sendable () async throws -> [Breed],
-        saveBreeds: @escaping @Sendable (_ breeds: [Breed]) async throws -> Void,
-        updateFavoriteBreed: @escaping @Sendable (_ breedID: String, _ isFavorite: Bool) async throws -> Void
-    ) {
-        self.fetchBreeds = fetchBreeds
-        self.saveBreeds = saveBreeds
-        self.updateFavoriteBreed = updateFavoriteBreed
-    }
-}
-
 extension BreedsCacheClient: TestDependencyKey {
+    /// A preview-friendly cache client backed by the in-memory store.
     public static var previewValue: Self {
         let repo = BreedsRepository(controller: .preview)
         return Self(
@@ -26,6 +11,7 @@ extension BreedsCacheClient: TestDependencyKey {
         )
     }
 
+    /// A no-op cache client for tests.
     public static var testValue: Self {
         Self(
             fetchBreeds: { [] },
@@ -36,6 +22,7 @@ extension BreedsCacheClient: TestDependencyKey {
 }
 
 extension BreedsCacheClient: DependencyKey {
+    /// The live cache client backed by the shared store.
     public static var liveValue: Self {
         let repo = BreedsRepository(controller: .shared)
         return Self(
@@ -47,6 +34,7 @@ extension BreedsCacheClient: DependencyKey {
 }
 
 public extension DependencyValues {
+    /// Access to the breed cache dependency.
     var breedsCacheClient: BreedsCacheClient {
         get { self[BreedsCacheClient.self] }
         set { self[BreedsCacheClient.self] = newValue }
